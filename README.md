@@ -1,3 +1,30 @@
+# Overview
+
+What will you actually learn? What is the problem that is being shown as an example? Who is the main audience? How long will it take a user to follow through, to it’s conclusion, this path?
+
+# Design
+
+The 10K foot view of the architecture that includes things like (DockerHub/VM/etc) to give a visual on what the overall design is.
+
+This should also include supported platforms.
+
+# Prerequisites
+
+What do you need to have at your disposal?
+
+Dockerhub account, VM, etc.
+
+# Setup
+
+What types of things you need to perform (logins/etc)
+
+# Steps
+
+Instructions on where to go (first notebook or folder)
+
+# Cleaning up
+
+Where applicable, what does the user have to manually scrub to clean it.
 
 # Contributing
 
