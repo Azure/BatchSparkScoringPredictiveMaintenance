@@ -12,11 +12,22 @@ This should also include supported platforms.
 
 What do you need to have at your disposal?
 
-Dockerhub account, VM, etc.
+## Databricks cluster
+https://ms.portal.azure.com/#create/Microsoft.Databricks
+
+## Databricsk CLI
+https://github.com/databricks/databricks-cli
 
 # Setup
 
-What types of things you need to perform (logins/etc)
+Login to databricks CLI. 
+
+## Import Notebooks
+
+## Setup databricks jobs 
+`databricks jobs create --json-file jobs/DataIngestion.json`
+`databricks jobs create --json-file jobs/FeatureEngineering.json`
+`databricks jobs create --json-file jobs/ModelBuilding.json`
 
 # Steps
 
