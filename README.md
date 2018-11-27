@@ -27,13 +27,17 @@ Login to databricks CLI.
 `databricks workspace import_dir notebooks /Users/example@databricks.com/notebooks`
 
 ## Setup databricks jobs 
+
 `databricks jobs create --json-file jobs/01_CreateDataIngestion.json`
+
 `databricks jobs run-now --job-id <jobID>`
 
 `databricks jobs create --json-file jobs/02_FeatureEngineering.json`
+
 `databricks jobs run-now --job-id <jobID>`
 
 `databricks jobs create --json-file jobs/03_ModelBuilding.json`
+
 `databricks jobs run-now --job-id <jobID>`
 
 # Steps
