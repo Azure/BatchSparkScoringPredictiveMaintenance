@@ -1,0 +1,26 @@
+{
+    "name": "Feature Engineering",
+    "new_cluster": {
+        "spark_version": "4.3.x-scala2.11",
+        "node_type_id": "Standard_DS3_v2",
+        "num_workers": 3,
+        "spark_env_vars": {
+            "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+        }
+    },
+    "email_notifications": {
+        "on_start": [],
+        "on_success": [],
+        "on_failure": []
+    },
+    "timeout_seconds": 3600,
+    "max_retries": 1,
+    "notebook_task": {
+        "notebook_path": "/Users/jehrling@microsoft.com/Code/2_feature_engineering_clean",
+        "base_parameters": {
+            "FEATURES_TABLE": "training_data",
+            "Start_Date": "2000-01-01",
+            "zEnd_Date": "2015-10-30"
+        }
+    }
+}
