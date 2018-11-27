@@ -1,5 +1,5 @@
 {
-    "name": "Feature Engineering",
+    "name": "Data ingestion",
     "new_cluster": {
         "spark_version": "4.3.x-scala2.11",
         "node_type_id": "Standard_DS3_v2",
@@ -16,17 +16,6 @@
     "timeout_seconds": 3600,
     "max_retries": 1,
     "notebook_task": {
-        "notebook_path": "/Users/jehrling@microsoft.com/Code/2_feature_engineering_clean",
-        "base_parameters": {}
-    }
-}
-
-{
-    "job_id": 1,
-    "notebook_params": {
-        "dry-run": "true",
-        "FEATURES_TABLE": "training_data",
-        "Start_Date": "2000-01-01",
-        "zEnd_Date": "2015-10-30"
+        "notebook_path": "/Users/jehrling@microsoft.com/notebooks/1_data_ingestion_clean"
     }
 }
