@@ -1,8 +1,11 @@
-# Overview
 
-What will you actually learn? What is the problem that is being shown as an example? Who is the main audience? How long will it take a user to follow through, to it’s conclusion, this path?
 
-# Design
+# Deploying Python models on a Kubernetes Cluster for real-time scoring
+
+## Overview
+This scenario shows how to deploy a Frequently Asked Questions (FAQ) matching model as a web service to provide predictions for user questions. For this scenario, “Input Data” in the architecture diagram refers to text strings containing the user questions to match with a list of FAQs. The scenario is designed for the Scikit-Learn machine learning library for Python but can be generalized to any scenario that uses Python models to make real-time predictions.
+
+## Design
 
 The 10K foot view of the architecture that includes things like (DockerHub/VM/etc) to give a visual on what the overall design is.
 
@@ -24,7 +27,7 @@ Login to databricks CLI.
 
 ## Import Notebooks
 
-`databricks workspace import_dir notebooks /Users/example@databricks.com/notebooks`
+`databricks workspace import_dir notebooks /Users/<uname@example.com>/notebooks`
 
 ## Setup databricks jobs 
 
@@ -32,13 +35,33 @@ Login to databricks CLI.
 
 `databricks jobs run-now --job-id <jobID>`
 
-`databricks jobs create --json-file jobs/02_FeatureEngineering.json`
+ 
+`databricks jobs create --json-file jobs/02_CreateFeatureEngineering.json`
 
 `databricks jobs run-now --job-id <jobID>`
 
-`databricks jobs create --json-file jobs/03_ModelBuilding.json`
+`databricks jobs run-now --job-id <jobID> --notebook-params {"FEATURES_TABLE":"testing_data","Start_Date":"2015-11-15","zEnd_Date":"2017-01-01"}`
+
+On windows command line, we need to escape the double quotes:
+
+`databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}`
+
+
+`databricks jobs create --json-file jobs/03_CreateModelBuilding.json`
 
 `databricks jobs run-now --job-id <jobID>`
+
+`databricks jobs run-now --job-id <jobID> --notebook-params {\"model\":\"DecisionTree\"}`
+
+
+`dbfs cp <SRC> <DST>`
+
+`dbfs cp  -r model.pqt dbfs:/storage/models/model.pqt`
+
+`databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"scoring_input\",\"Start_Date\":\"2015-12-30\",\"zEnd_Date\":\"2016-04-30\"}`
+
+`databricks jobs create --json-file jobs/04_CreateModelScoring.json`
+
 
 # Steps
 
@@ -61,3 +84,5 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+### Author: John Ehrlinger <john.ehrlinger@microsoft.com>

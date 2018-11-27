@@ -1,5 +1,5 @@
 {
-    "name": "Model Building",
+    "name": "Model Scoring",
     "new_cluster": {
         "spark_version": "4.3.x-scala2.11",
         "node_type_id": "Standard_DS3_v2",
@@ -15,11 +15,16 @@
     },
     "timeout_seconds": 3600,
     "max_retries": 1,
+    "schedule": {
+        "quartz_cron_expression": "0 15 22 ? * *",
+        "timezone_id": "America/Los_Angeles"
+    },
     "notebook_task": {
-        "notebook_path": "/Users/jehrling@microsoft.com/notebooks/3_model_building",
+        "notebook_path": "/Users/jehrling@microsoft.com/notebooks/4_model_scoring",
         "base_parameters": {
-            "TRAINING_TABLE": "training_data",
-            "model": "RandomForest"
+            "SCORING_DATA": "scoring_input",
+            "RESULTS_DATA": "results_output",
+            "MODEL_TYPE": "RandomForest"
         }
     }
 }
