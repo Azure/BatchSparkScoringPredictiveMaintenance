@@ -1,18 +1,6 @@
 {
     "name": "Model Building",
-    "new_cluster": {
-        "spark_version": "4.3.x-scala2.11",
-        "node_type_id": "Standard_DS3_v2",
-        "num_workers": 3,
-        "spark_env_vars": {
-            "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
-        }
-    },
-    "email_notifications": {
-        "on_start": [],
-        "on_success": [],
-        "on_failure": []
-    },
+    "existing_cluster_id": "1018-180830-sibyl773",
     "timeout_seconds": 3600,
     "max_retries": 1,
     "notebook_task": {
