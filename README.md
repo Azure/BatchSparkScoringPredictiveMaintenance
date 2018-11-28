@@ -18,9 +18,11 @@ This should also include supported platforms.
 What do you need to have at your disposal?
 
 ## Databricks cluster
+
 https://ms.portal.azure.com/#create/Microsoft.Databricks
 
 ## Databricsk CLI
+
 https://github.com/databricks/databricks-cli
 
 # Setup
@@ -31,16 +33,25 @@ Login to databricks CLI.
 
 `databricks workspace import_dir notebooks /Users/<uname@example.com>/notebooks`
 
+## Get cluster Id
+
+`databricks clusters list`
+
 ## Setup databricks jobs 
+
+### Ingest data
 
 `databricks jobs create --json-file jobs/01_CreateDataIngestion.json`
 
 `databricks jobs run-now --job-id <jobID>`
 
- 
+### Feature engineering
+
 `databricks jobs create --json-file jobs/02_CreateFeatureEngineering.json`
 
 `databricks jobs run-now --job-id <jobID>`
+
+We supply parameters using the `--notebook-params` command.
 
 `databricks jobs run-now --job-id <jobID> --notebook-params {"FEATURES_TABLE":"testing_data","Start_Date":"2015-11-15","zEnd_Date":"2017-01-01"}`
 
@@ -48,6 +59,7 @@ On windows command line, we need to escape the double quotes:
 
 `databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}`
 
+### Create the model
 
 `databricks jobs create --json-file jobs/03_CreateModelBuilding.json`
 
@@ -55,15 +67,23 @@ On windows command line, we need to escape the double quotes:
 
 `databricks jobs run-now --job-id <jobID> --notebook-params {\"model\":\"DecisionTree\"}`
 
-
-`dbfs cp <SRC> <DST>`
+If you already have a SPARK model saved in Parquet format, you can copy using the CLI command `dbfs cp <SRC> <DST>`.
 
 `dbfs cp  -r model.pqt dbfs:/storage/models/model.pqt`
 
+## Load the scoring job
+
+We need to create the dataset we'll score
+
 `databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"scoring_input\",\"Start_Date\":\"2015-12-30\",\"zEnd_Date\":\"2016-04-30\"}`
+
+The load the scoring job
 
 `databricks jobs create --json-file jobs/04_CreateModelScoring.json`
 
+Then run the job.
+
+`databricks jobs run-now --job-id <jobID>`
 
 # Steps
 
