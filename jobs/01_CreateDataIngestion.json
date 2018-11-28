@@ -1,13 +1,6 @@
 {
     "name": "Data ingestion",
-    "new_cluster": {
-        "spark_version": "4.3.x-scala2.11",
-        "node_type_id": "Standard_DS3_v2",
-        "num_workers": 3,
-        "spark_env_vars": {
-            "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
-        }
-    },
+    "existing_cluster_id": "PMHappyPath",
     "email_notifications": {
         "on_start": [],
         "on_success": [],
@@ -16,6 +9,6 @@
     "timeout_seconds": 3600,
     "max_retries": 1,
     "notebook_task": {
-        "notebook_path": "/Users/uname@example.com/notebooks/1_data_ingestion_clean"
+        "notebook_path": "/Users/jehrling@microsoft.com/notebooks/1_data_ingestion_clean"
     }
 }

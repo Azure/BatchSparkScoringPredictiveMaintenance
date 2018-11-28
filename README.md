@@ -1,9 +1,11 @@
 
 
-# Deploying Python models on a Kubernetes Cluster for real-time scoring
+# Batch scoring of SPARK machine learning models 
 
 ## Overview
-This scenario shows how to deploy a Frequently Asked Questions (FAQ) matching model as a web service to provide predictions for user questions. For this scenario, “Input Data” in the architecture diagram refers to text strings containing the user questions to match with a list of FAQs. The scenario is designed for the Scikit-Learn machine learning library for Python but can be generalized to any scenario that uses Python models to make real-time predictions.
+This scenario demonstrates the scoring of a SPARK machine learning model in batch mode on Azure Databricks. The model is constructed for a predictive maintenance scenario where we classify machine sensor readings into a periodic prediction of overall healthy and requiring maintenance for a series of machine components. The resulting supervised multi-class model scores batches of new observations through a regularly scheduled Azure Databricks notebook.
+
+For this scenario, “Input Data” in the architecture diagram refers to a set of five simulated data sets related to realistic machine operating conditions. The scenario is uses methods from the PySpark MLlib machine learning library but can be generalized to use any Python or R model hosted on Azure Databricks to make real-time predictions.
 
 ## Design
 
