@@ -1,10 +1,10 @@
 {
     "name": "Model Building",
-    "existing_cluster_id": "1018-180830-sibyl773",
+    "existing_cluster_id": "<clusterid>",
     "timeout_seconds": 3600,
     "max_retries": 1,
     "notebook_task": {
-        "notebook_path": "/Users/jehrling@microsoft.com/notebooks/3_model_building",
+        "notebook_path": "/Users/uname@example.com/notebooks/3_model_building",
         "base_parameters": {
             "TRAINING_TABLE": "training_data",
             "model": "RandomForest"
