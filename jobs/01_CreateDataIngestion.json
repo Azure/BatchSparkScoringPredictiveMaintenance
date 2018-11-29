@@ -4,6 +4,6 @@
     "timeout_seconds": 3600,
     "max_retries": 1,
     "notebook_task": {
-        "notebook_path": "/Users/uname@example.com/notebooks/1_data_ingestion_clean"
+        "notebook_path": "/Users/uname@example.com/notebooks/1_data_ingestion"
     }
 }

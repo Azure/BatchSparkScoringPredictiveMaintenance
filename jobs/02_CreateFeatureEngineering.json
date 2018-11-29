@@ -4,7 +4,7 @@
     "timeout_seconds": 3600,
     "max_retries": 1,
     "notebook_task": {
-        "notebook_path": "/Users/uname@example.com/notebooks/2_feature_engineering_clean",
+        "notebook_path": "/Users/uname@example.com/notebooks/2_feature_engineering",
         "base_parameters": {
             "FEATURES_TABLE": "training_data",
             "Start_Date": "2000-01-01",
