@@ -47,17 +47,20 @@ From a command line, you can pip install using
 
 `pip install --upgrade databricks-cli`
 
-Then connect the CLI to your databricks instance using your [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
+# Setup
 
-Use the following command:
+
+## Connect the CLI
+
+We need to connect the CLI to your databricks instance. This can be done using a Databricks generated [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
+
+Start from a command line, using the following command:
 
 `databricks configure --token`
 
 This will prompt you for your Azure Databricks hostname (copy this from the browser address bar), and then the [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
 
-# Setup
-
-
+Once complete, the CLI will always connect to this Databricks instance.
 
 ## Import Notebooks
 
@@ -67,15 +70,18 @@ This will prompt you for your Azure Databricks hostname (copy this from the brow
 
 `databricks clusters list`
 
-## Setup databricks jobs 
+# Steps
 
-### Ingest data
+Instructions on where to go (first notebook or folder)
+
+
+## Ingest data
 
 `databricks jobs create --json-file jobs/01_CreateDataIngestion.json`
 
 `databricks jobs run-now --job-id <jobID>`
 
-### Feature engineering
+## Feature engineering
 
 `databricks jobs create --json-file jobs/02_CreateFeatureEngineering.json`
 
@@ -89,7 +95,7 @@ On windows command line, we need to escape the double quotes:
 
 `databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}`
 
-### Create the model
+## Create the model
 
 `databricks jobs create --json-file jobs/03_CreateModelBuilding.json`
 
@@ -103,7 +109,7 @@ If you already have a SPARK model saved in Parquet format, you can copy using th
 
 ## Load the scoring job
 
-We need to create the dataset we'll score
+We need to create the data set we'll score using the Feature engineering job and a date range.
 
 `databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"scoring_input\",\"Start_Date\":\"2015-12-30\",\"zEnd_Date\":\"2016-04-30\"}`
 
@@ -114,10 +120,6 @@ The load the scoring job
 Then run the job.
 
 `databricks jobs run-now --job-id <jobID>`
-
-# Steps
-
-Instructions on where to go (first notebook or folder)
 
 # Cleaning up
 
