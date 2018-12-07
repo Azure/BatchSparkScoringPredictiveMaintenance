@@ -56,7 +56,7 @@ Use the following command:
 This will prompt you for your Azure Databricks hostname (copy this from the browser address bar), and then the [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
 
 # Setup
-dapid77c1b1ac815491a955735ec605376b5
+
 
 
 ## Import Notebooks
