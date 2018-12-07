@@ -10,23 +10,54 @@ For this scenario, “Input Data” in the architecture diagram refers to a set 
 
 ## Design
 
+This solution uses the Azure Databricks service. We create jobs that set up the batch scoring demonstration. Each job executes a Databricks notebook to prepare the data and create the full solution.
+
+ 1. Ingest process downloads the simulated datasets from a GitHub site and converts and stores them as Spark dataframes on the Databricks DBFS.
+
+ 2. Feature engineering transorms and combines the data sets into an analysis dataset. The analysis data set can be targeted for training a model, or scoring data for a production pipeline. Each analysis dataset is also stored in the Databricks DBFS.
+
+ 3. Training process takes a subset of the complete data and constructs a model we can use to predict future outcomes. The model is stored in the Databricks DBFS for use by the scoring notebook.
+
+ 4. The scoring process uses a different subset of the data, including data not yet collected to predict the current and future state of the machine. The model results are stored back onto the Databricks DBFS.
+
 ![Databricks Architecture diagram](./architecture.jpg "Architecture diagram")
 
 # Prerequisites
 
-What do you need to have at your disposal?
+We will be using a command line on your computer. You should have a Python version installed. We require Python Version > 2.7.9 or > 3.6 because of the Databricks CLI requirements.
 
-## Databricks cluster
+## Azure Databricks
+This example is designed to run on Azure Databricks. You can provision the service through the Azure portal at:
 
 https://ms.portal.azure.com/#create/Microsoft.Databricks
 
+This particular example will run on the Standard pricing tier. 
+
+## Databricks cluster
+
+Once your Azure Databricks instance has been deployed, we can create a compute cluster. Launch your new workspace, select the *Clusters* icon. and Create a new cluster with Python Version 3.
+
 ## Databricks CLI
+
+In order to avoid trying to explain how to execute the required steps in the Databricks UI, we will require the Databricks CLI available here:
 
 https://github.com/databricks/databricks-cli
 
-# Setup
+From a command line, you can pip install using 
 
-Login to databricks CLI. 
+`pip install --upgrade databricks-cli`
+
+Then connect the CLI to your databricks instance using your [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
+
+Use the following command:
+
+`databricks configure --token`
+
+This will prompt you for your Azure Databricks hostname (copy this from the browser address bar), and then the [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
+
+# Setup
+dapid77c1b1ac815491a955735ec605376b5
+
 
 ## Import Notebooks
 
