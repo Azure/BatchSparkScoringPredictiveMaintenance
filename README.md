@@ -24,7 +24,9 @@ This solution uses the Azure Databricks service. We create jobs that set up the 
 
 # Prerequisites
 
-We will be using a command line on your computer. You should have a Python version installed. We require Python Version > 2.7.9 or > 3.6 because of the Databricks CLI requirements.
+We assume you have cloned the GitHub repository to your working compute instance (local computer or VM). The repository is located at: `https://github.com/Azure/BatchSparkScoringPredictiveMaintenance.git`
+
+We will be using a Databricks command line utility (CLI) to automate many of these tasks. You should have a Python version installed. We require Python Version > 2.7.9 or > 3.6 for Databricks CLI requirements.
 
 ## Azure Databricks
 This example is designed to run on Azure Databricks. You can provision the service through the Azure portal at:
@@ -49,7 +51,6 @@ From a command line, you can pip install using
 
 # Setup
 
-
 ## Connect the CLI
 
 We need to connect the CLI to your databricks instance. This can be done using a Databricks generated [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
@@ -64,8 +65,21 @@ Once complete, the CLI will always connect to this Databricks instance.
 
 ## Import Notebooks
 
+We now need to copy the scenario notebooks to the Databricks instance. We can do this with a single CLI command. 
+
+`databricks workspace import_dir [OPTIONS] SOURCE_PATH TARGET_PATH`
+
+If you change into the local copy of the repository, your `SOURCE_PATH` will be the `notebooks` directory. The target path will include your user name, which you can get from the Azure Databricks UI, it should be related to your Azure AD email of the form `<uname@example.com>`. The `[TARGET_PATH]` will then be of the form `/Users/<uname@example.com>/notebooks`. 
+
+The command should look like the following:
+
 `databricks workspace import_dir notebooks /Users/<uname@example.com>/notebooks`
 
+On Windows, we need to escape the `/` characters, so the command will take the following form:
+
+`databricks workspace import_dir notebooks //Users//<uname@example.com>//notebooks`
+
+Once complete, you should
 ## Get cluster Id
 
 `databricks clusters list`
