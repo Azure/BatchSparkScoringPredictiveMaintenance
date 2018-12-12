@@ -59,13 +59,15 @@ Start from a command line, using the following command:
 
 `databricks configure --token`
 
-This will prompt you for your Azure Databricks hostname (copy this from the browser address bar), and then the [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
+This will prompt you for your Azure Databricks hostname, which is the url portion of the web address from your browser. In eastus region, it will be `https://eastus.azuredatabricks.net/`. You will not use the POST arguments for the hostname (everything including and following the '?' character).
 
-Once complete, the CLI will always connect to this Databricks instance.
+ You will also need an [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management)
+
+This operation will connect the CLI to this Databricks instance for all commands that follow.
 
 ## Import Notebooks
 
-We now need to copy the scenario notebooks to the Databricks instance. We can do this with a single CLI command. 
+We next copy the scenario notebooks to the Databricks instance. We can do this with a single CLI command.
 
 `databricks workspace import_dir [OPTIONS] SOURCE_PATH TARGET_PATH`
 
@@ -75,14 +77,17 @@ The command should look like the following:
 
 `databricks workspace import_dir notebooks /Users/<uname@example.com>/notebooks`
 
-On Windows, we need to escape the `/` characters, so the command will take the following form:
+This will copy all required notebooks into the `notebooks` folder of your Azure Databricks Workspace.
 
-`databricks workspace import_dir notebooks //Users//<uname@example.com>//notebooks`
-
-Once complete, you should
 ## Get cluster Id
 
+The final required piece of information is to find the cluster ID. We can only get this with the CLI with the following command:
+
 `databricks clusters list`
+
+`<cluster id>  <instance name>  <cluster status>`
+
+The cluster ID is in the first field of the list. We will use this to point the Databricks Jobs to execute on a specific execute cluster.
 
 # Steps
 

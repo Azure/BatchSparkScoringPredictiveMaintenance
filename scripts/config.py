@@ -16,6 +16,9 @@ def inplace_change(filename, old_string, new_string):
 # Module sys has to be imported:
 import sys                
 
+print 'Number of arguments:', len(sys.argv), 'arguments.'
+print 'Argument List:', str(sys.argv)
+
 # Iteration over all arguments:
 for eachArg in sys.argv:   
         print(eachArg)
