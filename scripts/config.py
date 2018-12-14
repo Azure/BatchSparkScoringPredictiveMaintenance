@@ -1,11 +1,30 @@
+##------------------------------------------------------------------------------------------
+## This scrip is used to customize the Databrick jobs script for the user's own
+## Azure databricks instance.
+##
+## > python scripts/config.py --username uname@example.com --clusterID 1111-111111-aaaaa111 ./jobs/
+##
+## Where:
+##       uname@example.com corresponds to the users Azure AD username
+##       found in the Azure Databricks Workspace pathname.
+##
+##      clusterID denotes the Azure Databricks cluster to execute the job.
+##      found from the databricks CLI command:
+##
+##      databricks clusters list
+##
+##
+##​ Copyright (C) Microsoft Corporation. All rights reserved.​  ​
+##------------------------------------------------------------------------------------------
+
 import argparse
 import os
 import glob
 import sys
 
 parser = argparse.ArgumentParser(
-    description="searches the jobs folder for Databricks Jobs json files,\n"
-    + "and configures the scripts to connect to the clusterID and username provided."
+    description="searches the supplied folder for Databricks Jobs json template files (.tmpl),\n"
+    + "and configures the scripts to connect to the Databricks with clusterID and username provided."
 )
 parser.add_argument(
     "-c",
@@ -21,16 +40,20 @@ parser.add_argument(
     help="Found from the Databricks Workspace and should look like\n"
     + "your active directory email address.",
 )
-parser.add_argument("infile", type=str)
+parser.add_argument(
+    "template_dir",
+    type=str,
+    help="the directory containing the Databrick job json templates (./jobs/).",
+)
 
 args = parser.parse_args()
 
 print(args.clusterID)
 print(args.username)
-print(args.infile)
+print(args.template_dir)
 
 
-for filename in glob.glob(os.path.join(args.infile, "*.tmpl")):
+for filename in glob.glob(os.path.join(args.template_dir, "*.tmpl")):
     with open(filename, "r") as f:
         s = f.read()
         if "<clusterid>" in s:
