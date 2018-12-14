@@ -30,7 +30,7 @@ print(args.username)
 print(args.infile)
 
 
-for filename in glob.glob(os.path.join(args.infile, "*.json")):
+for filename in glob.glob(os.path.join(args.infile, "*.tmpl")):
     with open(filename, "r") as f:
         s = f.read()
         if "<clusterid>" in s:
