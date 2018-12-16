@@ -2,7 +2,7 @@
 ## This scrip is used to customize the Databrick jobs script for the user's own
 ## Azure databricks instance.
 ##
-## > python scripts/config.py --username uname@example.com --clusterID 1111-111111-aaaaa111 ./jobs/
+## > python scripts/config.py --username <uname@example.com> --clusterID <cluster id> ./jobs/
 ##
 ## Where:
 ##       uname@example.com corresponds to the users Azure AD username
