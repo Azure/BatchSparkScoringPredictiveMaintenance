@@ -148,11 +148,16 @@ Again, we run the job specifying the returned jobID.
 
 To change the job parameters, we can over ride the default parameters built into the notebook using the `--notebook-params` command argument.
 
-`databricks jobs run-now --job-id <jobID> --notebook-params {"FEATURES_TABLE":"testing_data","Start_Date":"2015-11-15","zEnd_Date":"2017-01-01"}`
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {"FEATURES_TABLE":"testing_data","Start_Date":"2015-11-15","zEnd_Date":"2017-01-01"}
+```
 
 On windows command line, we need to escape the double quotes for this to work: 
 
-`databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}`
+`
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}
+```
 
 The data manipulation and transformation job should take under 3 minutes to build the training data if your cluster is already started. Smaller date ranges may run faster.
 
@@ -170,7 +175,9 @@ and use the same `run-now` CLI command to run the job.
 
 By default the model building job builds a RandomForest spark model using the `training_data` data set we created in the `02_CreateFeatureEngineering` job. We have included parameters to change to a DecisionTree model and to change the `TRAINING_TABLE` data set name as well. 
 
-`databricks jobs run-now --job-id <jobID> --notebook-params {\"model\":\"DecisionTree\"}`
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {\"model\":\"DecisionTree\"}
+```
 
 The model is stored to the Databricks files system at `dbfs:/storage/models/model.pqt`. If you already have a SPARK model saved in the parquet format `(.pqt)` format, you can copy using the CLI command `dbfs cp <SRC> <DST>`.
 
@@ -190,7 +197,9 @@ We simulate this process by selecting a new date range from the simulation data 
 
 Step one is to run the feature engineering step with a new `FEATURES_TABLE` (`scoring_inpout`), and a new start date `2015-12-30` and end date `2016-04-30`:
 
-`databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"scoring_input\",\"Start_Date\":\"2015-12-30\",\"zEnd_Date\":\"2016-04-30\"}`
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"scoring_input\",\"Start_Date\":\"2015-12-30\",\"zEnd_Date\":\"2016-04-30\"}
+```
 
 The `notebooks\4_model_scoring.ipynb` notebook takes the scoring data set from the `SCORING_DATA` dataset, and scores the observations using the `model_type` model, storing the model prediction results in the `RESULTS_DATA` data set
 
