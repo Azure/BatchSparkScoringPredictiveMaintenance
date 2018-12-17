@@ -114,10 +114,19 @@ For this scenario, you could bring your own model, and skip the initial three st
 
 The first step is to download the data and store as a Spark Dataframe on your Azure Databricks instance. The actual process is done through the `1_data_ingestion.ipynb` jupyter notebook that we copied into the `notebooks` folder of your workspace. You can either use the Azure Databricks UI to connect the notebook to your cluster and execute all cells, or use the CLI to create a Databricks Job to do the same process. We'll use the Job script we customized above.
 
-To create a job from the cli, use the following command:
+To create a job from the CLI, use the following command:
 `databricks jobs create --json-file jobs/01_CreateDataIngestion.json`
 
+This registers the job, and describes what notebook to execute where. To run the job, take the job-id returned when the job was created, and use the following command:
+
 `databricks jobs run-now --job-id <jobID>`
+
+The first run may take some time, as it will need to startup the target cluster before running all cells in the data ingestion notebook. 
+
+You can review the registered jobs in your Azure Databricks instance through the UI or with the CLI command 
+
+`databricks jobs list`
+
 
 ## Transform and manipulate the data
 
