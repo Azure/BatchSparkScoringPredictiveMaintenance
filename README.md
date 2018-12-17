@@ -85,60 +85,151 @@ The final required piece of information is to find the cluster ID. We can only g
 
 `databricks clusters list`
 
-`<cluster id>  <instance name>  <cluster status>`
-
 The cluster ID is in the first field of the list. We will use this to point the Databricks Jobs to execute on a specific execute cluster.
+
+## Custom Configuration
+
+The solution is built using a series of notebooks that are executed using the Databricks Jobs construct. We can construct the Databricks Jobs using mouse clicks the Azure Databricks UI or through commands on the Databricks CLI. We've included script templates to create Databricks Jobs using the CLI. The `config.py` will customize these scripts to connect to your specific Azure Databricks instance. To connect, we need your username (`uname@example.com`) and the cluster ID (`clusterID`) found above.
+
+From the root repository, the command usage would be:
+
+```
+python scripts/config.py [-h] [-c CLUSTERID] [-u USERNAME] ./jobs/
+```
+
+This command reads the `./jobs/*.tmpl` files, and replaces the clusterID and username placeholder strings with the specifics for your Databricks cluster, and stores the results in the JSON jobs scripts we'll use to setup the environment and demonstrate the Batch scoring processes.
 
 # Steps
 
-Instructions on where to go (first notebook or folder)
+Before we can get to scoring a machine learning model, we need to go through the steps of a data science process. 
 
+1. **Ingest the data**
+1. **Manipulate and Transform the data** into an analysis data set
+1. **Create a model**
+1. **Score** new observations with the created model
+
+For this scenario, you could bring your own model, and skip the initial three steps of this scenario.
 
 ## Ingest data
 
+The first step is to download the data and store as a Spark Dataframe on your Azure Databricks instance. The actual process is done through the `1_data_ingestion.ipynb` jupyter notebook that we copied into the `notebooks` folder of your workspace. You can either use the Azure Databricks UI to connect the notebook to your cluster and execute all cells, or use the CLI to create a Databricks Job to do the same process. We'll use the Job script we customized above.
+
+To create a job from the CLI, use the following command:
 `databricks jobs create --json-file jobs/01_CreateDataIngestion.json`
+
+This registers the job, and describes what notebook to execute where. To run the job, take the job-id returned when the job was created, and use the following command:
 
 `databricks jobs run-now --job-id <jobID>`
 
-## Feature engineering
+You can review the registered jobs in your Azure Databricks instance through the UI or with the CLI command: 
+
+`databricks jobs list`
+
+The first run may take some time, as it will need to startup the target cluster before running all cells in the data ingestion notebook. This job typically will take about 8-10 minutes to complete. 
+
+Additionally, a notebook has been provided to examine the SPARK data frames constructed in the  `notebooks\1_data_ingestion.ipynb` execution. You can see this in your Azure Databricks Workspace through the UI `notebooks\1a_raw_data_exploring.ipynb` notebook. You must run the ingest data job for before running the exploration notebook cells.
+
+The exploration notebook details the simulated data sets we used for this predictive maintenance solution example.
+
+## Manipulate and Transform the data
+
+Once the data is in place, we want to create analysis data sets. The manipulations and transformation used to create the training set to build the model, should be reused to test and calibrate the model and again reused on incoming production data to score new observations. 
+
+For this scenario, we use a temporal splitting strategy. We train the model on all data collected before October 30, 2015, and use the remaining data to simulate production data for scoring. The `notebooks/2_feature_engineering.ipynb` notebook uses [Databricks Input widgets] to allow input parameters for specifying the output storage dataset (`training_data` by default) and the start date (`2000-01-01`) and end date (`2015-10-30`) of the job run. 
+
+We create the feature engineering job using the following command:
 
 `databricks jobs create --json-file jobs/02_CreateFeatureEngineering.json`
 
+Again, we run the job specifying the returned jobID.
+
 `databricks jobs run-now --job-id <jobID>`
 
-We supply parameters using the `--notebook-params` command.
 
-`databricks jobs run-now --job-id <jobID> --notebook-params {"FEATURES_TABLE":"testing_data","Start_Date":"2015-11-15","zEnd_Date":"2017-01-01"}`
+To change the job parameters, we can over ride the default parameters built into the notebook using the `--notebook-params` command argument.
 
-On windows command line, we need to escape the double quotes:
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {"FEATURES_TABLE":"testing_data","Start_Date":"2015-11-15","zEnd_Date":"2017-01-01"}
+```
 
-`databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}`
+On windows command line, we need to escape the double quotes for this to work: 
 
-## Create the model
+`
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}
+```
 
+The data manipulation and transformation job should take under 3 minutes to build the training data if your cluster is already started. Smaller date ranges may run faster.
+
+We again provide an data exploration notebook `notebooks\2a_feature_exploration.ipynb` as an example. This notebook details some of the feature engineering steps we used for this predictive maintenance solution example.
+
+## Create a model
+
+Once we have a training set, we can build our model. We build the model in the `notebooks\3_model_building.ipynb` notebook, which also persists the model in a `pkl` file to the Databricks file system. 
+
+We create the model building job from the command line:
 `databricks jobs create --json-file jobs/03_CreateModelBuilding.json`
 
+and use the same `run-now` CLI command to run the job.
 `databricks jobs run-now --job-id <jobID>`
 
-`databricks jobs run-now --job-id <jobID> --notebook-params {\"model\":\"DecisionTree\"}`
+By default the model building job builds a RandomForest spark model using the `training_data` data set we created in the `02_CreateFeatureEngineering` job. We have included parameters to change to a DecisionTree model and to change the `TRAINING_TABLE` data set name as well. 
 
-If you already have a SPARK model saved in Parquet format, you can copy using the CLI command `dbfs cp <SRC> <DST>`.
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {\"model\":\"DecisionTree\"}
+```
+
+The model is stored to the Databricks files system at `dbfs:/storage/models/model.pqt`. If you already have a SPARK model saved in the parquet format `(.pqt)` format, you can copy using the CLI command `dbfs cp <SRC> <DST>`.
 
 `dbfs cp  -r model.pqt dbfs:/storage/models/model.pqt`
 
-## Load the scoring job
+In order to bring your own model, you'll also need to bring your own data (1. data ingestion) and your own manipulation/transformation (2. feature engineering) processes before being able to score new data with it. 
 
-We need to create the data set we'll score using the Feature engineering job and a date range.
+To get an idea how the model performs, the `notebooks\3a_model_testing.ipynb` notebook loads the stored model and a feature data set specified in the notebook parameter fields, and calculates a set of model metrics.
 
-`databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"scoring_input\",\"Start_Date\":\"2015-12-30\",\"zEnd_Date\":\"2016-04-30\"}`
+It will take about 4-5 minutes to train the SPARK RandomForest model.
 
-The load the scoring job
+## Score new observations
 
+To here, we all previous jobs/notebooks have been geared toward setting up the batch scoring operation. The scoring process requires new data observations to be manipulated and transformed just as the training data in order for the model to predict the target. In this scenario, we apply the feature engineering notebook (`notebooks/02_feature_engineering.ipynb`) to new data that we assume was ingested into the same raw data sets that the training data was stored in. 
+
+We simulate this process by selecting a new date range from the simulation data we ingested in the first data ingestion job. There are data leakage issues possible in predictive maintenance scenarios if we select data starting immediately after the training data. This is do to the time series lagging feature engineering transform required to inform the model of past machine behavior. For this reason, we start the scoring data two months after the last observation in the training data. The window gap can be shortened to the feature lag length, though we did not do that here.
+
+Step one is to run the feature engineering step with a new `FEATURES_TABLE` (`scoring_inpout`), and a new start date `2015-12-30` and end date `2016-04-30`:
+
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"scoring_input\",\"Start_Date\":\"2015-12-30\",\"zEnd_Date\":\"2016-04-30\"}
+```
+
+The `notebooks\4_model_scoring.ipynb` notebook takes the scoring data set from the `SCORING_DATA` dataset, and scores the observations using the `model_type` model, storing the model prediction results in the `RESULTS_DATA` data set
+
+Create the job using the CLI command:
 `databricks jobs create --json-file jobs/04_CreateModelScoring.json`
 
-Then run the job.
+Remember to run the feature engineering job above before running this job with default parameters (that point to the `scoring_input` dataset) as before:
 
 `databricks jobs run-now --job-id <jobID>`
+
+Again, you can manipulate the notebook parameters for `SCORING_DATA` set, the `MODEL_TYPE` (`RandomForest` or `DecisionTree`) to indicate where the model is stored. The notebook looks for the model in the `dbfs:/storage/models/[MODEL_TYPE].pqt"` file. The notebook then stores the observation scores in the `RESULTS_TABLE` for post processing and final consumption.
+  
+You can check on your run status using the CLI command:
+
+`databricks runs list`
+
+This allows you to check on which jobs have been run. If your scoring job fails, make sure you've run the feature engineering job to create the `scoring_input` data set.
+
+The scoring job will take less than 1 minute. 
+
+# Batch scoring job
+
+
+
+Create the job using the CLI command:
+`databricks jobs create --json-file jobs/05_CreateScoringWorkflow.json`
+
+Then run the job with default parameters as before:
+`databricks jobs run-now --job-id <jobID>`
+
 
 # Cleaning up
 
