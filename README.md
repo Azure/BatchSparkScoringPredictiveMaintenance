@@ -121,28 +121,41 @@ This registers the job, and describes what notebook to execute where. To run the
 
 `databricks jobs run-now --job-id <jobID>`
 
-The first run may take some time, as it will need to startup the target cluster before running all cells in the data ingestion notebook. 
-
-You can review the registered jobs in your Azure Databricks instance through the UI or with the CLI command 
+You can review the registered jobs in your Azure Databricks instance through the UI or with the CLI command: 
 
 `databricks jobs list`
 
+The first run may take some time, as it will need to startup the target cluster before running all cells in the data ingestion notebook. This job typically will take about 8-10 minutes to complete. 
+
+Additionally, a notebook has been provided to examine the SPARK data frames constructed in the  `notebooks\1_data_ingestion.ipynb` execution. You can see this in your Azure Databricks Workspace through the UI `notebooks\1a_raw_data_exploring.ipynb` notebook. You must run the ingest data job for before running the exploration notebook cells.
 
 ## Transform and manipulate the data
 
+Once the data is in place, we want to create analysis data sets. The manipulations and transformation used to create the training set to build the model, should be reused to test and calibrate the model and again reused on incoming production data to score new observations. 
+
+For this scenario, we use a temporal splitting strategy. We train the model on all data collected before October 30, 2015, and use the remaining data to simulate production data for scoring. The `notebooks/2_feature_engineering.ipynb` notebook uses [Databricks Input widgets] to allow input parameters for specifying the output storage dataset (`training_data` by default) and the start date (`2000-01-01`) and end date (`2015-10-30`) of the job run. 
+
+We create the feature engineering job using the following command:
+
 `databricks jobs create --json-file jobs/02_CreateFeatureEngineering.json`
+
+Again, we run the job specifying the returned jobID.
 
 `databricks jobs run-now --job-id <jobID>`
 
-We supply parameters using the `--notebook-params` command.
+
+To change the job parameters, we can over ride the default parameters built into the notebook using the `--notebook-params` command argument.
 
 `databricks jobs run-now --job-id <jobID> --notebook-params {"FEATURES_TABLE":"testing_data","Start_Date":"2015-11-15","zEnd_Date":"2017-01-01"}`
 
-On windows command line, we need to escape the double quotes:
+On windows command line, we need to escape the double quotes for this to work: 
 
 `databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}`
 
+The data manipulation and transformation job should take under 3 minutes to build the training data if your cluster is already started. Smaller date ranges may run faster.
+
 ## Create a model
+
 
 `databricks jobs create --json-file jobs/03_CreateModelBuilding.json`
 
