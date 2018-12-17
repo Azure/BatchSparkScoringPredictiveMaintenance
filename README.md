@@ -85,22 +85,41 @@ The final required piece of information is to find the cluster ID. We can only g
 
 `databricks clusters list`
 
-`<cluster id>  <instance name>  <cluster status>`
-
 The cluster ID is in the first field of the list. We will use this to point the Databricks Jobs to execute on a specific execute cluster.
+
+## Custom Configuration
+
+The solution is built using a series of notebooks that are executed using the Databricks Jobs construct. We can construct the Databricks Jobs using mouse clicks the Azure Databricks UI or through commands on the Databricks CLI. We've included script templates to create Databricks Jobs using the CLI. The `config.py` will customize these scripts to connect to your specific Azure Databricks instance. To connect, we need your username (`uname@example.com`) and the cluster ID (`clusterID`) found above.
+
+From the root repository, the command usage would be:
+
+```
+python scripts/config.py [-h] [-c CLUSTERID] [-u USERNAME] ./jobs/
+```
+
+This command reads the `./jobs/*.tmpl` files, and replaces the clusterID and username placeholder strings with the specifics for your Databricks cluster, and stores the results in the JSON jobs scripts we'll use to setup the environment and demonstrate the Batch scoring processes.
 
 # Steps
 
-Instructions on where to go (first notebook or folder)
+Before we can get to scoring a machine learning model, we need to go through the steps of a data science process. 
 
+1. **Ingest the data**
+1. **Transform and manipulate the data** into an analysis data set
+1. **Create a model**
+1. **Score** new observations with the created model
+
+For this scenario, you could bring your own model, and skip the initial three steps of this scenario.
 
 ## Ingest data
 
+The first step is to download the data and store as a Spark Dataframe on your Azure Databricks instance. The actual process is done through the `1_data_ingestion.ipynb` jupyter notebook that we copied into the `notebooks` folder of your workspace. You can either use the Azure Databricks UI to connect the notebook to your cluster and execute all cells, or use the CLI to create a Databricks Job to do the same process. We'll use the Job script we customized above.
+
+To create a job from the cli, use the following command:
 `databricks jobs create --json-file jobs/01_CreateDataIngestion.json`
 
 `databricks jobs run-now --job-id <jobID>`
 
-## Feature engineering
+## Transform and manipulate the data
 
 `databricks jobs create --json-file jobs/02_CreateFeatureEngineering.json`
 
@@ -114,7 +133,7 @@ On windows command line, we need to escape the double quotes:
 
 `databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"testing_data\",\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\"}`
 
-## Create the model
+## Create a model
 
 `databricks jobs create --json-file jobs/03_CreateModelBuilding.json`
 
@@ -126,7 +145,7 @@ If you already have a SPARK model saved in Parquet format, you can copy using th
 
 `dbfs cp  -r model.pqt dbfs:/storage/models/model.pqt`
 
-## Load the scoring job
+## Score new observations
 
 We need to create the data set we'll score using the Feature engineering job and a date range.
 
