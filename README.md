@@ -108,7 +108,7 @@ Before we can get to scoring a machine learning model, we need to go through the
 1. **Create a model**
 1. **Score** new observations with the created model
 
-For this scenario, you could bring your own model, and skip the initial three steps of this scenario.
+For each of these steps, we will use the Databricks CLI to create a [Databricks Job](https://docs.databricks.com/user-guide/jobs.html). Each Databrick Job will automate the running of a Databricks notebook either immediately or on a scheduled basis. We create the jobs using instructions contained in JSON files located in the `./jobs/` folder of this repository.
 
 ## Ingest data
 
@@ -204,6 +204,7 @@ databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\
 The `notebooks\4_model_scoring.ipynb` notebook takes the scoring data set from the `SCORING_DATA` dataset, and scores the observations using the `model_type` model, storing the model prediction results in the `RESULTS_DATA` data set
 
 Create the job using the CLI command:
+
 `databricks jobs create --json-file jobs/04_CreateModelScoring.json`
 
 Remember to run the feature engineering job above before running this job with default parameters (that point to the `scoring_input` dataset) as before:
@@ -222,18 +223,36 @@ The scoring job will take less than 1 minute.
 
 # Batch scoring job
 
+Notice from the previous section that the scoring process is actually a pipeline of operations. We assume raw data arrives through the some process. The scoring operation has to transform the raw data into the correct format for the model to consume, then the model makes predictions which we store for later consumption. 
 
+We've created the `notebooks/05_full_scoring_workflow.ipynb` to execute a full scoring pipeline. The notebook takes a `start_date` and `end_date`, as well as a `model_type` to indicate which model to use and a `results_table` name to store the model predictions. The notebook runs the `notebooks/2_feature_engineering.ipynb` notebook to transform the data, storing the results in the `HPscoring_input` dataset, and then runs the `notebooks/4_model_scoring.ipynb` notebook with the specified model and results data target data set. 
 
-Create the job using the CLI command:
+Create the scoring workflow job using the CLI command:
+
 `databricks jobs create --json-file jobs/05_CreateScoringWorkflow.json`
 
 Then run the job with default parameters as before:
+
 `databricks jobs run-now --job-id <jobID>`
+
+To specify different parameters, use the following call:
+
+```
+databricks jobs run-now --job-id <jobID> --notebook-params {\"Start_Date\":\"2015-11-15\",\"zEnd_Date\":\"2017-01-01\", \"RESULTS_DATA\":\"scored_data", \"MODEL_TYPE\":\"DecisionTree\"}
+```
+
+The entire workflow job will take about 2-3 minutes to complete given this 2.5 months of data.
+
+# Conclusion
+
+This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution.
+
+For this scenario, you could bring your own model, and skip the initial three steps of this scenario.
 
 
 # Cleaning up
 
-Where applicable, what does the user have to manually scrub to clean it.
+The easiest way to cleanup this work is to delete the Azure Databricks instance through the Azure portal (portal.azure.com).
 
 # Contributing
 
