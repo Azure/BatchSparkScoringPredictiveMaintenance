@@ -65,3 +65,5 @@ for filename in glob.glob(os.path.join(args.template_dir, "*.tmpl")):
     with open(fname, "w") as fs:
         fs.write(s)
 
+if __name__ == "__main__":
+    main()
