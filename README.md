@@ -55,49 +55,47 @@ From a command line, you can pip install using
 
 We need to connect the CLI to your databricks instance. This can be done using a Databricks generated [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
 
+
+This operation will connect the CLI to this Databricks instance for all commands that follow.
 Start from a command line, using the following command:
 
 `databricks configure --token`
 
-This will prompt you for your Azure Databricks hostname, which is the url portion of the web address from your browser. In eastus region, it will be `https://eastus.azuredatabricks.net/`. You will not use the POST arguments for the hostname (everything including and following the '?' character).
-
- You will also need an [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management)
-
-This operation will connect the CLI to this Databricks instance for all commands that follow.
+This will prompt you for your Azure Databricks hostname, which is the url portion of the web address from your browser. In eastus region, it will be `https://eastus.azuredatabricks.net/`. You will not use the POST arguments for the hostname (everything including and following the '?' character). You will also need an [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management)
 
 ## Import Notebooks
 
-We next copy the scenario notebooks to the Databricks instance. We can do this with a single CLI command.
+Next, use the CLI to copy the scenario notebooks to your Databricks instance with the following command.
 
 `databricks workspace import_dir [OPTIONS] SOURCE_PATH TARGET_PATH`
 
-If you change into the local copy of the repository, your `SOURCE_PATH` will be the `notebooks` directory. The target path will include your user name, which you can get from the Azure Databricks UI, it should be related to your Azure AD email of the form `<uname@example.com>`. The `[TARGET_PATH]` will then be of the form `/Users/<uname@example.com>/notebooks`. 
+Change into the local copy of the repository. Your `SOURCE_PATH` will be the `./notebooks` directory. The target path will include your user name, which you can get from the Azure Databricks UI, it should be related to your Azure AD email of the form `<uname@example.com>`. The `[TARGET_PATH]` will then be of the form `/Users/<uname@example.com>/notebooks`. 
 
 The command should look like the following:
 
 `databricks workspace import_dir notebooks /Users/<uname@example.com>/notebooks`
 
-This will copy all required notebooks into the `notebooks` folder of your Azure Databricks Workspace.
+This will copy all required notebooks into the `notebooks` folder of your Azure Databricks Workspace. 
 
 ## Get cluster Id
 
-The final required piece of information is to find the cluster ID. We can only get this with the CLI with the following command:
+We also need the Databricks ClusterID to direct all compute operations on your Databricks Instance. The only way to find the ClusterID is through the following CLI command:
 
 `databricks clusters list`
 
-The cluster ID is in the first field of the list. We will use this to point the Databricks Jobs to execute on a specific execute cluster.
+The clusterID is in the first field of the list. We will use this to point the Databricks Jobs to execute on a specific execute cluster.
 
 ## Custom Configuration
 
-The solution is built using a series of notebooks that are executed using the Databricks Jobs construct. We can construct the Databricks Jobs using mouse clicks the Azure Databricks UI or through commands on the Databricks CLI. We've included script templates to create Databricks Jobs using the CLI. The `config.py` will customize these scripts to connect to your specific Azure Databricks instance. To connect, we need your username (`uname@example.com`) and the cluster ID (`clusterID`) found above.
+This scenario is built using a series of Jupyter notebooks, executed using the Databricks Jobs construct. We can construct the Databricks Jobs using mouse clicks through the Azure Databricks UI or through commands on the Databricks CLI. We've included JSON script templates to create Databricks Jobs using the CLI. The `config.py` will customize these scripts to connect to your specific Azure Databricks instance. To connect, we need your username (`<uname@example.com>`) and the cluster ID (`<clusterID>`) found above.
 
-From the root repository, the command usage would be:
+From the root repository directory, the `config.py` command usage:
 
 ```
 python scripts/config.py [-h] [-c CLUSTERID] [-u USERNAME] ./jobs/
 ```
 
-This command reads the `./jobs/*.tmpl` files, and replaces the clusterID and username placeholder strings with the specifics for your Databricks cluster, and stores the results in the JSON jobs scripts we'll use to setup the environment and demonstrate the Batch scoring processes.
+This command reads the `./jobs/*.tmpl` files, replaces the clusterID and username placeholder strings with the specifics for your Databricks cluster, storing the modified files to the JSON jobs scripts we'll use to setup and demonstrate the Batch scoring processes.
 
 # Steps
 
