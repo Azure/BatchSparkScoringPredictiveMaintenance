@@ -55,13 +55,13 @@ From a command line, you can pip install using
 
 We need to connect the CLI to your databricks instance. This can be done using a Databricks generated [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
 
+This operation will connect the CLI to this Databricks instance for all commands that follow. 
 
-This operation will connect the CLI to this Databricks instance for all commands that follow.
 Start from a command line, using the following command:
 
 `databricks configure --token`
 
-This will prompt you for your Azure Databricks hostname, which is the url portion of the web address from your browser. In eastus region, it will be `https://eastus.azuredatabricks.net/`. You will not use the POST arguments for the hostname (everything including and following the '?' character). You will also need an [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management)
+This will prompt you for your Azure Databricks hostname, which is the url portion of the web address from your browser. In `eastus` region, it will be `https://eastus.azuredatabricks.net/`. You will not use the POST arguments for the hostname (everything including and following the '?' character). You will also need to create and copy an [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management). Instructions are provided at the link.
 
 ## Import Notebooks
 
@@ -125,7 +125,6 @@ You can review the registered jobs in your Azure Databricks instance through the
 
 `databricks jobs list`
 
-
 To check on specific state of submitted job runs, you can use the command:
 
 `databricks runs list`
@@ -147,7 +146,6 @@ We create the feature engineering job using the following command:
 Again, we run the job specifying the returned jobID.
 
 `databricks jobs run-now --job-id <jobID>`
-
 
 To change the job parameters, we can over ride the default parameters built into the notebook using the `--notebook-params` command argument.
 
@@ -259,14 +257,13 @@ The entire workflow job will take about 2-3 minutes to complete given this 2.5 m
 
 # Conclusion
 
-This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The batch process is executed through Databricks Jobs, which automate running Databricks notebooks either on demand or on a schedule. 
+This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The batch process is executed through Databricks Jobs, which automate running Databricks notebooks either on demand or on a schedule.
 
 In a production setting for this scenario, we would expect data to arrive from different machines asynchronously. A regularly scheduled batch job could query the data store for machine ID's that have new data since the last scoring batch job. A query would then pull the scoring data window corresponding to the feature engineering process, score the data, and append these results into the data storage for use by the end user consumption process.
 
 # Cleaning up
 
 The easiest way to cleanup this work is to delete the Azure Databricks instance through the Azure portal (https://portal.azure.com).
-
 
 # References
 
@@ -282,13 +279,9 @@ This scenario has been developed using a similar predictive maintenance use case
 
 # Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
