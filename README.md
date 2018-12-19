@@ -89,9 +89,9 @@ This will copy all required notebooks into the `notebooks` folder of your Azure 
 
 Run through the following notebooks on now located in your Azure Databricks workspace
 
-  * [Ingest Data](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/1_data_ingestion.ipynb)
-  * [Model Training Pipeline]
-  * [Data Scoring Pipeline]
+  * [Ingest Data](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/1_data_ingestion.ipynb) in your `notebooks/1_data_ingestion` notebook.
+  * [Model Training Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/2_Training_Pipeline.ipynb) in your `notebooks/2_Training_Pipeline` notebook.
+  * [Data Scoring Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/3_Scoring_Pipeline.ipynb)  in your `notebooks/3_Scoring_Pipeline` notebook
   * (optional) [Create a batch scoring Databricks Job]()
 
 This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The batch process is executed through Databricks Jobs, which automate running Databricks notebooks either on demand or on a schedule.
