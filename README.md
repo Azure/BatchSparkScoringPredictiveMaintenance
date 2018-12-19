@@ -51,6 +51,14 @@ From a command line, you can pip install using
 
 # Setup
 
+Before running the notebooks, we need to setup the environment.
+
+ * Connect the CLI to your Databricks instance
+ * Import the repo notebooks into your Databricks workspace
+ * Get the clusterID to direct the execution compute context
+ * Customize the Jobs JSON scripts to direct Jobs to the correct Databricks Workspace and ClusterID locations. 
+
+
 ## Connect the CLI
 
 We need to connect the CLI to your databricks instance. This can be done using a Databricks generated [Authentication token](https://docs.databricks.com/api/latest/authentication.html#token-management).
@@ -85,7 +93,7 @@ We also need the Databricks ClusterID to direct all compute operations on your D
 
 The clusterID is in the first field of the list. We will use this to point the Databricks Jobs to execute on a specific execute cluster.
 
-## Custom Configuration
+## Customize the jobs scripts
 
 This scenario is built using a series of Jupyter notebooks, executed using the Databricks Jobs construct. We can construct the Databricks Jobs using mouse clicks through the Azure Databricks UI or through commands on the Databricks CLI. We've included JSON script templates to create Databricks Jobs using the CLI. The `config.py` will customize these scripts to connect to your specific Azure Databricks instance. To connect, we need your username (`<uname@example.com>`) and the cluster ID (`<clusterID>`) found above.
 
