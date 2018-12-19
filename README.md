@@ -33,30 +33,35 @@ This example is designed to run on Azure Databricks. You can provision the servi
 
 https://ms.portal.azure.com/#create/Microsoft.Databricks
 
-This particular example will run on the Standard pricing tier. 
+This example will run on the Standard pricing tier. 
 
 ## Databricks cluster
 
-Once your Azure Databricks instance has been deployed, we can create a compute cluster. Launch your new workspace, select the *Clusters* icon. and Create a new cluster with Python Version 3.
+Once your Azure Databricks instance has been deployed, you will need to create a compute cluster to execute the notebooks. Launch your new workspace from the Azure portal, select the *Clusters* icon, and `Create Cluster` to provision a new cluster with Python Version 3. The remaining defaults values are acceptable.
 
 ## Databricks CLI
 
-In order to avoid trying to explain how to execute the required steps in the Databricks UI, we will require the Databricks CLI available here:
+Installing the Databricks CLI will simplify some of the operations required for this scenario. The first step is to import the Jupyter 10 notebooks from the repository into your Databricks workspace. This can be accomplished with 1 command once the CLI is connected to your Azure Databricks instance. The Databricks CLI available here:
 
 https://github.com/databricks/databricks-cli
 
-From a command line, you can pip install using 
+From a command line, you can pip install the CLI using 
 
 `pip install --upgrade databricks-cli`
 
 # Setup
 
- * Clone the repo `git clone https://github.com/Azure/BatchSparkScoringPredictiveMaintenance`
- * cd into the repo
+ * Clone the repo 
+ 
+ ```
+ git clone https://github.com/Azure/BatchSparkScoringPredictiveMaintenance
+ ```
 
-Before next we copy the repo notebook artifacts to your Azure databricks.
+ * cd into the root directory of your cloned repo
 
- * Connect the CLI to your Databricks instance
+The next two subsections of this document detail how to:
+
+ * Connect the CLI to your Databricks instance to simplify the import of repo notebooks.
  * Import the repo notebooks into your Databricks workspace
 
 ## Connect the CLI to your Databricks instance
@@ -87,12 +92,12 @@ This will copy all required notebooks into the `notebooks` folder of your Azure 
 
 # Steps
 
-Run through the following notebooks on now located in your Azure Databricks workspace
+To create the full example scenario, run through the following notebooks now located in your Azure Databricks workspace.
 
-  * [Ingest Data](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/1_data_ingestion.ipynb)
-  * [Model Training Pipeline]
-  * [Data Scoring Pipeline]
-  * (optional) [Create a batch scoring Databricks Job]()
+  * [Ingest Data](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/1_data_ingestion.ipynb) in your `notebooks/1_data_ingestion` notebook.
+  * [Model Training Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/2_Training_Pipeline.ipynb) in your `notebooks/2_Training_Pipeline` notebook.
+  * [Data Scoring Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/3_Scoring_Pipeline.ipynb)  in your `notebooks/3_Scoring_Pipeline` notebook
+  * (optional) [Create a batch scoring Databricks Job](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/BatchScoringJob.md) using the Databricks CLI and the instruction at the link.
 
 This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The batch process is executed through Databricks Jobs, which automate running Databricks notebooks either on demand or on a schedule.
 
