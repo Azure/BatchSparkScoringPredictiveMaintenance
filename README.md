@@ -265,7 +265,7 @@ In a production setting for this scenario, we would expect data to arrive from d
 
 # Cleaning up
 
-The easiest way to cleanup this work is to delete the Azure Databricks instance through the Azure portal (portal.azure.com).
+The easiest way to cleanup this work is to delete the Azure Databricks instance through the Azure portal (https://portal.azure.com).
 
 # Contributing
 
