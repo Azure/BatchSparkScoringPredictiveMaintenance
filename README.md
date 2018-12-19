@@ -108,14 +108,16 @@ Before we can get to scoring a machine learning model, we need to go through the
 
 For each of these steps, we will use the Databricks CLI to create a [Databricks Job](https://docs.databricks.com/user-guide/jobs.html). Each Databricks Job will automate the running of a Databricks notebook either immediately or on a scheduled basis. We create the jobs using instructions contained in JSON files located in the `./jobs/` folder of this repository.
 
+This is a serial process, where each step in the process depends on data artifacts created in the previous step. Customization of this scenario will require a similar set of data artifacts.
+
 ## Ingest data
 
-The first step is to download the data and store as a Spark Dataframe on your Azure Databricks instance. The actual process is done through the `1_data_ingestion.ipynb` Jupyter notebook that we copied into the `notebooks` folder of your workspace. You can either use the Azure Databricks UI to connect the notebook to your cluster and execute all cells, or use the CLI to create a Databricks Job to do the same process. We'll use the Job script we customized above.
+The first step is to download the raw data sets and store them as Spark Dataframes accessible to your Azure Databricks instance. The actual process is done through the `1_data_ingestion.ipynb` Jupyter notebook that we copied into the `notebooks` folder of your workspace. You can either use the Azure Databricks UI to connect the notebook to your cluster and execute all cells, or use the CLI to create a Databricks Job to do the same process automatically. We'll use the Job script we customized above.
 
 To create a job from the CLI, use the following command:
 `databricks jobs create --json-file jobs/01_CreateDataIngestion.json`
 
-This registers the job, and describes what notebook to execute where. To run the job, take the job-id returned when the job was created, and use the following command:
+This registers the job, and describes what notebook to execute on which cluster. Successful completion of the command returns a `<jobID>` number we can use in subsequent commands. To run the job, use the `<jobID>` in the following command:
 
 `databricks jobs run-now --job-id <jobID>`
 
@@ -123,11 +125,14 @@ You can review the registered jobs in your Azure Databricks instance through the
 
 `databricks jobs list`
 
-The first run may take some time, as it will need to start up the target cluster before running all cells in the data ingestion notebook. This job typically will take about 8-10 minutes to complete. 
 
-Additionally, a notebook has been provided to examine the SPARK data frames constructed in the  `notebooks\1_data_ingestion.ipynb` execution. You can see this in your Azure Databricks Workspace through the UI `notebooks\1a_raw_data_exploring.ipynb` notebook. You must run the ingest data job for before running the exploration notebook cells.
+To check on specific state of submitted job runs, you can use the command:
 
-The exploration notebook details the simulated data sets we used for this predictive maintenance solution example.
+`databricks runs list`
+
+The first run may take some time, as it will liekly need to start the target Databricks cluster before running all cells in the data ingestion notebook. If the cluster is already running, this job typically will take about 8-10 minutes to complete. 
+
+To examine the SPARK data frames constructed in the  `notebooks\1_data_ingestion.ipynb` execution, an additional notebook has been included in the repostiory and copied to your Azure Databricks Workspace.  The `notebooks\1a_raw_data_exploring.ipynb` notebook can be run interactively through the Azure Databricks Workspace UI. You must run the ingest data job for before running the exploration notebook cells. The exploration notebook details the simulated data sets we used for this predictive maintenance solution example.
 
 ## Manipulate and Transform the data
 
