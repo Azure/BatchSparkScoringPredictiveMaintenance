@@ -12,9 +12,9 @@ For this scenario, “Input Data” in the architecture diagram refers to a set 
 
 This solution uses the Azure Databricks service. We create jobs that set up the batch scoring demonstration. Each job executes a Databricks notebook to prepare the data and create the full solution.
 
- 1. Ingest process downloads the simulated datasets from a GitHub site and converts and stores them as Spark dataframes on the Databricks DBFS.
+ 1. Ingest process downloads the simulated data sets from a GitHub site and converts and stores them as Spark dataframes on the Databricks DBFS.
 
- 2. Feature engineering transorms and combines the data sets into an analysis dataset. The analysis data set can be targeted for training a model, or scoring data for a production pipeline. Each analysis dataset is also stored in the Databricks DBFS.
+ 2. Feature engineering transforms and combines the data sets into an analysis data set. The analysis data set can be targeted for training a model, or scoring data for a production pipeline. Each analysis data set is also stored in the Databricks DBFS.
 
  3. Training process takes a subset of the complete data and constructs a model we can use to predict future outcomes. The model is stored in the Databricks DBFS for use by the scoring notebook.
 
@@ -108,11 +108,11 @@ Before we can get to scoring a machine learning model, we need to go through the
 1. **Create a model**
 1. **Score** new observations with the created model
 
-For each of these steps, we will use the Databricks CLI to create a [Databricks Job](https://docs.databricks.com/user-guide/jobs.html). Each Databrick Job will automate the running of a Databricks notebook either immediately or on a scheduled basis. We create the jobs using instructions contained in JSON files located in the `./jobs/` folder of this repository.
+For each of these steps, we will use the Databricks CLI to create a [Databricks Job](https://docs.databricks.com/user-guide/jobs.html). Each Databricks Job will automate the running of a Databricks notebook either immediately or on a scheduled basis. We create the jobs using instructions contained in JSON files located in the `./jobs/` folder of this repository.
 
 ## Ingest data
 
-The first step is to download the data and store as a Spark Dataframe on your Azure Databricks instance. The actual process is done through the `1_data_ingestion.ipynb` jupyter notebook that we copied into the `notebooks` folder of your workspace. You can either use the Azure Databricks UI to connect the notebook to your cluster and execute all cells, or use the CLI to create a Databricks Job to do the same process. We'll use the Job script we customized above.
+The first step is to download the data and store as a Spark Dataframe on your Azure Databricks instance. The actual process is done through the `1_data_ingestion.ipynb` Jupyter notebook that we copied into the `notebooks` folder of your workspace. You can either use the Azure Databricks UI to connect the notebook to your cluster and execute all cells, or use the CLI to create a Databricks Job to do the same process. We'll use the Job script we customized above.
 
 To create a job from the CLI, use the following command:
 `databricks jobs create --json-file jobs/01_CreateDataIngestion.json`
@@ -125,7 +125,7 @@ You can review the registered jobs in your Azure Databricks instance through the
 
 `databricks jobs list`
 
-The first run may take some time, as it will need to startup the target cluster before running all cells in the data ingestion notebook. This job typically will take about 8-10 minutes to complete. 
+The first run may take some time, as it will need to start up the target cluster before running all cells in the data ingestion notebook. This job typically will take about 8-10 minutes to complete. 
 
 Additionally, a notebook has been provided to examine the SPARK data frames constructed in the  `notebooks\1_data_ingestion.ipynb` execution. You can see this in your Azure Databricks Workspace through the UI `notebooks\1a_raw_data_exploring.ipynb` notebook. You must run the ingest data job for before running the exploration notebook cells.
 
@@ -135,7 +135,7 @@ The exploration notebook details the simulated data sets we used for this predic
 
 Once the data is in place, we want to create analysis data sets. The manipulations and transformation used to create the training set to build the model, should be reused to test and calibrate the model and again reused on incoming production data to score new observations. 
 
-For this scenario, we use a temporal splitting strategy. We train the model on all data collected before October 30, 2015, and use the remaining data to simulate production data for scoring. The `notebooks/2_feature_engineering.ipynb` notebook uses [Databricks Input widgets] to allow input parameters for specifying the output storage dataset (`training_data` by default) and the start date (`2000-01-01`) and end date (`2015-10-30`) of the job run. 
+For this scenario, we use a temporal splitting strategy. We train the model on all data collected before October 30, 2015, and use the remaining data to simulate production data for scoring. The `notebooks/2_feature_engineering.ipynb` notebook uses [Databricks Input widgets] to allow input parameters for specifying the output storage data set (`training_data` by default) and the start date (`2000-01-01`) and end date (`2015-10-30`) of the job run. 
 
 We create the feature engineering job using the following command:
 
@@ -183,7 +183,7 @@ The model is stored to the Databricks files system at `dbfs:/storage/models/mode
 
 `dbfs cp  -r model.pqt dbfs:/storage/models/model.pqt`
 
-In order to bring your own model, you'll also need to bring your own data (1. data ingestion) and your own manipulation/transformation (2. feature engineering) processes before being able to score new data with it. 
+In order to bring your own model, you'll also need to bring your own data (1. data ingestion) and your own manipulation/transformation (2. feature engineering) processes before being able to score new data with it (4. score).
 
 To get an idea how the model performs, the `notebooks\3a_model_testing.ipynb` notebook loads the stored model and a feature data set specified in the notebook parameter fields, and calculates a set of model metrics.
 
@@ -201,13 +201,13 @@ Step one is to run the feature engineering step with a new `FEATURES_TABLE` (`sc
 databricks jobs run-now --job-id <jobID> --notebook-params {\"FEATURES_TABLE\":\"scoring_input\",\"Start_Date\":\"2015-12-30\",\"zEnd_Date\":\"2016-04-30\"}
 ```
 
-The `notebooks\4_model_scoring.ipynb` notebook takes the scoring data set from the `SCORING_DATA` dataset, and scores the observations using the `model_type` model, storing the model prediction results in the `RESULTS_DATA` data set
+The `notebooks\4_model_scoring.ipynb` notebook takes the scoring data set from the `SCORING_DATA` data set, and scores the observations using the `model_type` model, storing the model prediction results in the `RESULTS_DATA` data set
 
 Create the job using the CLI command:
 
 `databricks jobs create --json-file jobs/04_CreateModelScoring.json`
 
-Remember to run the feature engineering job above before running this job with default parameters (that point to the `scoring_input` dataset) as before:
+Remember to run the feature engineering job above before running this job with default parameters (that point to the `scoring_input` data set) as before:
 
 `databricks jobs run-now --job-id <jobID>`
 
@@ -225,13 +225,24 @@ The scoring job will take less than 1 minute.
 
 Notice from the previous section that the scoring process is actually a pipeline of operations. We assume raw data arrives through the some process. The scoring operation has to transform the raw data into the correct format for the model to consume, then the model makes predictions which we store for later consumption. 
 
-We've created the `notebooks/05_full_scoring_workflow.ipynb` to execute a full scoring pipeline. The notebook takes a `start_date` and `end_date`, as well as a `model_type` to indicate which model to use and a `results_table` name to store the model predictions. The notebook runs the `notebooks/2_feature_engineering.ipynb` notebook to transform the data, storing the results in the `HPscoring_input` dataset, and then runs the `notebooks/4_model_scoring.ipynb` notebook with the specified model and results data target data set. 
+We've created the `notebooks/05_full_scoring_workflow.ipynb` to execute a full scoring pipeline. The notebook takes a `start_date` and `end_date`, as well as a `model_type` to indicate which model to use and a `results_table` name to store the model predictions. The notebook runs the `notebooks/2_feature_engineering.ipynb` notebook to transform the data, storing the results in the `HPscoring_input` data set, and then runs the `notebooks/4_model_scoring.ipynb` notebook with the specified model and results data target data set. 
 
 Create the scoring workflow job using the CLI command:
 
 `databricks jobs create --json-file jobs/05_CreateScoringWorkflow.json`
 
-Then run the job with default parameters as before:
+This particular batch job is configured to only run on demand as the previous jobs. However, adding a _schedule_ command to the JSON file in `jobs/05_CreateScoringWorkflow.json`.
+
+```
+"schedule": {
+    "quartz_cron_expression": "0 15 22 ? * *",
+    "timezone_id": "America/Los_Angeles"
+  },
+```
+
+Details can be found in the documentation at (https://docs.databricks.com/api/latest/jobs.html#create)
+
+Run the job with default parameters as before:
 
 `databricks jobs run-now --job-id <jobID>`
 
@@ -245,10 +256,9 @@ The entire workflow job will take about 2-3 minutes to complete given this 2.5 m
 
 # Conclusion
 
-This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution.
+This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The batch process is executed through Databricks Jobs, which automate running Databricks notebooks either on demand or on a schedule. 
 
-For this scenario, you could bring your own model, and skip the initial three steps of this scenario.
-
+In a production setting for this scenario, we would expect data to arrive from different machines asynchronously. A regularly scheduled batch job could query the data store for machine ID's that have new data since the last scoring batch job. A query would then pull the scoring data window corresponding to the feature engineering process, score the data, and append these results into the data storage for use by the end user consumption process.
 
 # Cleaning up
 
