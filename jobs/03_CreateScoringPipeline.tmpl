@@ -1,0 +1,15 @@
+{
+    "name": "Scoring Workflow",
+    "existing_cluster_id": "<clusterid>",
+    "timeout_seconds": 3600,
+    "max_retries": 1,
+    "notebook_task": {
+        "notebook_path": "/Users/<uname@example.com>/notebooks/5_full_scoring_workflow",
+        "base_parameters": {
+            "RESULTS_DATA": "HPresults_output",
+            "MODEL_TYPE": "RandomForest",
+            "Start_Date": "2015-11-15",
+            "zEnd_Date": "2016-04-30"
+        }
+    }
+}
