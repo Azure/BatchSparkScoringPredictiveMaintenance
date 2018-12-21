@@ -2,9 +2,9 @@
 
 ## Overview
 
-This scenario demonstrates batch scoring of a SPARK machine learning model on Azure Databricks. We use a predictive maintenance scenario where we classify machine sensor readings to classify a set of four machine components into healthy or unhealthy requiring maintenance states. The resulting supervised multi-class classifier model scores batches of new observations through a regularly scheduled Azure Databricks notebook jobs.
+This scenario demonstrates batch scoring of a SPARK machine learning model on Azure Databricks. We use a predictive maintenance scenario where we classify machine sensor readings to classify a set of four machine components into _healthy_ or _unhealthy requiring maintenance_ states. The resulting supervised multi-class classifier model scores batches of new observations through a regularly scheduled Azure Databricks notebook jobs.
 
-For this scenario, “Input Data” in the architecture diagram refers to a set of five simulated data sets related to realistic machine operating conditions. The solution uses methods from the PySpark MLlib machine learning library but the scoring process can be generalized to use any Python or R model hosted on Azure Databricks to make real-time predictions.
+The solution uses methods from the PySpark MLlib machine learning library but the scoring process can be generalized to use any Python or R model hosted on Azure Databricks to make real-time predictions.
 
 For an in depth description of the scenario, we have documented the operations in each of the supplied Jupyter notebooks contained in the `./notebooks/` directory of this repository.
 
@@ -12,7 +12,7 @@ For an in depth description of the scenario, we have documented the operations i
 
 This solution uses the Azure Databricks service. We create jobs that set up the batch scoring demonstration. Each job executes a Databricks notebook to prepare the data and create the full solution.
 
- 1. Ingest process downloads the simulated data sets from a GitHub site and converts and stores them as Spark dataframes on the Databricks DBFS.
+ 1. Ingest process downloads the simulated data sets from a GitHub site and converts and stores them as Spark dataframes on the Databricks DBFS. “Input Data” in the architecture diagram refers to a set of five simulated data sets related to realistic machine operating conditions. 
 
  2. Feature engineering transforms and combines the data sets into an analysis data set. The analysis data set can be targeted for training a model, or scoring data for a production pipeline. Each analysis data set is also stored in the Databricks DBFS.
 
@@ -24,11 +24,12 @@ This solution uses the Azure Databricks service. We create jobs that set up the 
 
 # Prerequisites
 
-We assume you have cloned the GitHub repository to your working compute instance (local computer or VM). The repository is located at: `https://github.com/Azure/BatchSparkScoringPredictiveMaintenance.git`
+We assume you have access to git on your working compute instance (local computer or VM). The repository is located at: `https://github.com/Azure/BatchSparkScoringPredictiveMaintenance`
 
-We will be using a Databricks command line utility (CLI) to automate many of these tasks. You should have a Python version installed. We require Python Version > 2.7.9 or > 3.6 for Databricks CLI requirements.
+We will be using a Databricks command line utility (CLI) to automate many of these tasks. You will need to have a Python Version > 2.7.9 or > 3.6 as specified in Databricks CLI requirements.
 
 ## Azure Databricks
+
 This example is designed to run on Azure Databricks. You can provision the service through the Azure portal at:
 
 https://ms.portal.azure.com/#create/Microsoft.Databricks
@@ -92,12 +93,12 @@ This will copy all required notebooks into the `notebooks` folder of your Azure 
 
 # Steps
 
-To create the full example scenario, run through the following notebooks now located in your Azure Databricks workspace.
+To create the full example scenario, run through the following notebooks now located in your Azure Databricks workspace. 
 
-  * [Ingest Data](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/1_data_ingestion.ipynb) in your `notebooks/1_data_ingestion` notebook.
-  * [Model Training Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/2_Training_Pipeline.ipynb) in your `notebooks/2_Training_Pipeline` notebook.
-  * [Data Scoring Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/3_Scoring_Pipeline.ipynb)  in your `notebooks/3_Scoring_Pipeline` notebook
-  * (optional) [Create a batch scoring Databricks Job](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/BatchScoringJob.md) using the Databricks CLI and the instruction at the link.
+  * [Ingest Data](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/1_data_ingestion.ipynb) Run all cells in the `notebooks/1_data_ingestion` notebook on the Azure Databricks workspace.
+  * [Model Training Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/2_Training_Pipeline.ipynb) Run all cells in the `notebooks/2_Training_Pipeline` notebook on the Azure Databricks workspace.
+  * [Data Scoring Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/3_Scoring_Pipeline.ipynb) Run all cells in the `notebooks/3_Scoring_Pipeline` notebook on the Azure Databricks workspace.
+  * (optional) Instruction to [create a batch scoring Databricks Job](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/BatchScoringJob.md) using the Databricks CLI are documented at the link.
 
 This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The batch process is executed through Databricks Jobs, which automate running Databricks notebooks either on demand or on a schedule.
 
