@@ -34,9 +34,9 @@ This command reads the `./jobs/*.tmpl` files, replaces the clusterID and usernam
 
 Create the scoring pipeline job using the CLI command:
 
-`databricks jobs create --json-file jobs/03_CreateScoringPipeline.json`
+`databricks jobs create --json-file jobs/3_CreateScoringPipeline.json`
 
-This particular batch job is configured to only run on demand as the previous jobs. However, adding a _schedule_ command to the JSON file in `jobs/03_CreateScoringPipeline.json`.
+This particular batch job is configured to only run on demand as the previous jobs. However, adding a _schedule_ command to the JSON file in `jobs/3_CreateScoringPipeline.json`.
 
 ```
 "schedule": {
