@@ -56,10 +56,10 @@ To specify different parameters, use the following call on Windows (we need to e
 databricks jobs run-now --job-id <jobID> --notebook-params {\"start_date\":\"2015-11-15\",\"to_date\":\"2017-01-01\",\"results_data\":\"predictions\",\"model\":\"RandomForest\"}
 ```
 
-**note** We have noticed issues running this on a OS X and Windows. We should be able to use this command, 
+**note** We have noticed issues running this on Mac OS X. We should be able to use this command, 
 ```
 databricks jobs run-now --job-id <jobID> --notebook-params {"results_data":"predictions","model":"RandomForest","start_date":"2015-11-15","to_date":"2017-01-01"}
 ```
-However this seems to fail consistently.
+However this seems to fail consistently. 
 
 The entire workflow job will take about 2-3 minutes to complete given this 2.5 months of data.
