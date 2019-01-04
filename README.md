@@ -34,9 +34,9 @@ This example is designed to run on Azure Databricks. You can provision the servi
 
 https://ms.portal.azure.com/#create/Microsoft.Databricks
 
-This example will run on the Standard pricing tier.
+If this link does not get you to create an Azure databricks service, you can search for databricks in the https://portal.azure.com.
 
-
+This example will run on the Standard pricing tier. 
 
 ## Databricks cluster
 
