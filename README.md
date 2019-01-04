@@ -1,8 +1,8 @@
-# Batch scoring of SPARK machine learning models 
+# Batch scoring of Spark machine learning models 
 
 ## Overview
 
-This scenario demonstrates batch scoring of a SPARK machine learning model on Azure Databricks. We use a predictive maintenance scenario where we classify machine sensor readings to classify a set of four machine components into _healthy_ or _unhealthy requiring maintenance_ states. The resulting supervised multi-class classifier model scores batches of new observations through a regularly scheduled Azure Databricks notebook jobs.
+This scenario demonstrates batch scoring of a Spark machine learning model on Azure Databricks. We use a predictive maintenance scenario where we classify machine sensor readings to classify a set of four machine components into _healthy_ or _unhealthy requiring maintenance_ states. The resulting supervised multi-class classifier model scores batches of new observations through a regularly scheduled Azure Databricks notebook jobs.
 
 The solution uses methods from the PySpark MLlib machine learning library but the scoring process can be generalized to use any Python or R model hosted on Azure Databricks to make real-time predictions.
 
@@ -30,13 +30,16 @@ We assume you have an Azure subscription. You will also need access to git on yo
 
 ## Azure Databricks
 
-This example is designed to run on Azure Databricks. You can provision the service through the Azure portal at:
+This example is designed to run on [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/) . You can provision the service through the Azure portal at:
 
 https://ms.portal.azure.com/#create/Microsoft.Databricks
 
 If this link does not get you to create an Azure databricks service, you can search for `databricks` in the https://portal.azure.com.
 
-This example will run on the Standard pricing tier. 
+This example will run on the `Standard pricing tier`. See https://azure.microsoft.com/en-us/pricing/details/databricks/ for information on different pricing tiers.
+
+See https://docs.azuredatabricks.net/getting-started/index.html for detailed documentation on using Azure Databricks.
+
 
 ## Databricks cluster
 
