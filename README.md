@@ -24,9 +24,9 @@ This solution uses the Azure Databricks service. We create jobs that set up the 
 
 # Prerequisites
 
-We assume you have access to git on your working compute instance (local computer or VM). The repository is located at: `https://github.com/Azure/BatchSparkScoringPredictiveMaintenance`
+We assume you have an Azure subscription. You will also need access to git on your working compute instance (local computer or VM). The repository is located at: `https://github.com/Azure/BatchSparkScoringPredictiveMaintenance`
 
-We will be using a Databricks command line utility (CLI) to automate many of these tasks. You will need to have a Python Version > 2.7.9 or > 3.6 as specified in Databricks CLI requirements.
+ We also require Python Version > 2.7.9 or > 3.6 as specified for using the Databricks CLI.
 
 ## Azure Databricks
 
@@ -42,23 +42,23 @@ Once your Azure Databricks instance has been deployed, you will need to create a
 
 ## Databricks CLI
 
-Installing the Databricks CLI will simplify some of the operations required for this scenario. The first step is to import the Jupyter 10 notebooks from the repository into your Databricks workspace. This can be accomplished with 1 command once the CLI is connected to your Azure Databricks instance. The Databricks CLI available here:
-
-https://github.com/databricks/databricks-cli
+We will be using a Databricks command line utility (CLI) to automate running notebook tasks using the Databricks Jobs construct. Installing the Databricks CLI will simplify some of the operations required for this scenario. The first step is to import the Jupyter notebooks from the repository into your Databricks workspace. This can be accomplished with 1 command once the CLI is connected to your Azure Databricks instance.
 
 From a command line, you can pip install the CLI using 
 
-`pip install --upgrade databricks-cli`
+```
+pip install --upgrade databricks-cli
+```
 
 # Setup
 
- * Clone the repo 
+ * Clone the GitHub repository: 
  
  ```
- git clone https://github.com/Azure/BatchSparkScoringPredictiveMaintenance
+ git clone https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance.git
  ```
 
- * cd into the root directory of your cloned repo
+ * cd into the root directory of your cloned repository
 
 The next two subsections of this document detail how to:
 
@@ -106,6 +106,10 @@ This scenario demonstrates how to automate the batch scoring of a predictive mai
 
 The easiest way to cleanup this work is to delete the Azure Databricks instance through the Azure portal (https://portal.azure.com).
 
+You may also want to remove the Databricks CLI from your python environment with
+```
+pip uninstall databricks-cli
+```
 # References
 
 This scenario has been developed using a similar predictive maintenance use case published at following reference locations:
