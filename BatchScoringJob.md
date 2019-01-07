@@ -70,4 +70,4 @@ The `quartz_cron_expression` takes [Quartz cron](http://www.quartz-scheduler.org
 
 # Conclusion
 
-The actual work of this scenario is done through this Azure Databricks job. The job executes the `3_Scoring_Pipeline` notebook, which depends on a machine learning model existing on the Azure Databricks file storage. We created the model using the `2_Training_Pipeline` notebook.
+The actual work of this scenario is done through this Azure Databricks job. The job executes the `3_Scoring_Pipeline` notebook, which depends on a machine learning model existing on the Azure Databricks file storage. We created the model using the `2_Training_Pipeline` notebook which used the data downloaded with the `1_data_ingestion` notebook.
