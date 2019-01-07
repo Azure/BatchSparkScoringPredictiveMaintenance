@@ -36,22 +36,11 @@ Create the scoring pipeline job using the CLI command:
 
 `databricks jobs create --json-file jobs/3_CreateScoringPipeline.json`
 
-This particular batch job is configured to only run on demand as the previous jobs. However, adding a _schedule_ command to the JSON file in `jobs/3_CreateScoringPipeline.json`.
-
-```
-"schedule": {
-    "quartz_cron_expression": "0 15 22 ? * *",
-    "timezone_id": "America/Los_Angeles"
-  },
-```
-
-Details to customize this scheduler can be found in the documentation at (https://docs.databricks.com/api/latest/jobs.html#create)
-
-Run the job with default parameters as before:
+This particular batch job is configured to only run on demand as our example data does not change with time. Using the `<jobID>` returned from the create command, run the job manually with default parameters specified in the scoring notebook with the following command.
 
 `databricks jobs run-now --job-id <jobID>`
 
-To specify different parameters, use the following call on Windows (we need to escape out the quote characters).
+To specify different notebook input parameters, use the following call on Windows (we need to escape out the quote characters).
 ```
 databricks jobs run-now --job-id <jobID> --notebook-params {\"start_date\":\"2015-11-15\",\"to_date\":\"2017-01-01\",\"results_data\":\"predictions\",\"model\":\"RandomForest\"}
 ```
@@ -60,6 +49,25 @@ databricks jobs run-now --job-id <jobID> --notebook-params {\"start_date\":\"201
 ```
 databricks jobs run-now --job-id <jobID> --notebook-params {"results_data":"predictions","model":"RandomForest","start_date":"2015-11-15","to_date":"2017-01-01"}
 ```
-However this seems to fail consistently. 
+However this seems to fail consistently. This is a known Databricks CLI issue. 
 
 The entire workflow job will take about 2-3 minutes to complete given this 2.5 months of data.
+
+## Further customization
+
+For our example, we only run the batch scoring job on demand. This keeps your costs down, since the example data does not change with time. 
+
+In a real scenario, we would expect the data ingestion step to be automated. As data arrives on the datastore, we could then periodically run the batch scoring job automatically. You can customize the `jobs/3_CreateScoringPipeline.json` (or .tmpl) files in your local repository to run the Azure Databricks job on a schedule by adding the following code block below the `"notebook_tasks":` block.
+
+```
+"schedule": {
+    "quartz_cron_expression": "0 30 7-18 ? * *",
+    "timezone_id": "America/Los_Angeles"
+  },
+```
+
+The `quartz_cron_expression` takes [Quartz cron](http://www.quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/tutorial-lesson-06.html) style arguments. In this example, the job will run every hour on the half hour, between 7:30am and 6:30pm every day. More details to customize this scheduler can be found in the documentation at (https://docs.databricks.com/api/latest/jobs.html#jobscronschedule)
+
+# Conclusion
+
+The actual work of this scenario is done through this Azure Databricks job. The job executes the `3_Scoring_Pipeline` notebook, which depends on a machine learning model existing on the Azure Databricks file storage. We created the model using the `2_Training_Pipeline` notebook.

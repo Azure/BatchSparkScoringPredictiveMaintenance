@@ -24,26 +24,25 @@ This solution uses the Azure Databricks service. We create jobs that set up the 
 
 # Prerequisites
 
-We assume you have an Azure subscription. You will also need access to git on your working compute instance (local computer or VM). The repository is located at: `https://github.com/Azure/BatchSparkScoringPredictiveMaintenance`
+ * We assume you have an Azure subscription. You will also need access to git on your working compute instance (local computer or VM). The repository is located at: `https://github.com/Azure/BatchSparkScoringPredictiveMaintenance`
 
- We also require Python Version > 2.7.9 or > 3.6 as specified for using the Databricks CLI.
+* Any working computer that has a web browser, and runs python Python Version > 2.7.9 or > 3.6 as specified for using the Databricks CLI.
 
 ## Azure Databricks
 
-This example is designed to run on [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/) . You can provision the service through the Azure portal at:
+This example is designed to run on [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/). Provision the service through your Azure supscription at the [Azure portal](https://portal.azure.com).
 
-https://ms.portal.azure.com/#create/Microsoft.Databricks
-
-If this link does not get you to create an Azure databricks service, you can search for `databricks` in the https://portal.azure.com.
-
-This example will run on the `Standard pricing tier`. See https://azure.microsoft.com/en-us/pricing/details/databricks/ for information on different pricing tiers.
-
+  * Search for `databricks` and select the Azure Databricks. Follow the prompts, and select `Standard pricing tier`. See https://azure.microsoft.com/en-us/pricing/details/databricks/ for information on different pricing tiers.
+  
 See https://docs.azuredatabricks.net/getting-started/index.html for detailed documentation on using Azure Databricks.
 
 
 ## Databricks cluster
 
-Once your Azure Databricks instance has been deployed, you will need to create a compute cluster to execute the notebooks. Launch your new workspace from the Azure portal, select the *Clusters* icon, and `Create Cluster` to provision a new cluster with Python Version 3. The remaining defaults values are acceptable.
+Once your Azure Databricks service has been created, you will need to create a compute cluster to execute the notebooks.
+
+  * From the portal, find your new Azure Databricks service, and `Launch Workspace`.
+  * A new window will open in your browser. Select the *Clusters* icon, and `Create Cluster` to provision a new cluster with Python Version 3. The remaining defaults values are acceptable.
 
 ## Databricks CLI
 
@@ -92,29 +91,41 @@ The command should look like the following:
 
 `databricks workspace import_dir notebooks /Users/<uname@example.com>/notebooks`
 
-This will copy all required notebooks into the `notebooks` folder of your Azure Databricks Workspace. 
+This will copy all required notebooks into the `notebooks` folder of your Azure Databricks Workspace.
+
+To find these notebooks in your  Azure Databricks Workspace, use the *Workspace* icon, follow the path to your `/Users/<uname@example.com>/notebooks`. Databricks uses Jupyter notebooks with some extensions. Instructions on how to use Jupyter notebooks are at https://docs.databricks.com/user-guide/notebooks/notebook-use.html#run-notebooks.
 
 # Steps
 
-To create the full example scenario, through your Azure Databricks workspace, run through the following notebooks now located in your Azure Databricks workspace. 
+To create the full example scenario, through your Azure Databricks workspace, run through the following notebooks now located in your Azure Databricks workspacce. 
+
+These notebooks need to be run sequentially in alpha-numeric order, as each depends on data artifacts produced in the previous notebooks full run.
 
 When running the notebooks, you may have to start your Azure Databricks cluster or attach these notebooks to your Azure Databricks cluster. The UI will prompt you if this is required.
 
-  * [Ingest Data](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/1_data_ingestion.ipynb) Run all cells in the `notebooks/1_data_ingestion` notebook on the Azure Databricks workspace.
-  * [Model Training Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/2_Training_Pipeline.ipynb) Run all cells in the `notebooks/2_Training_Pipeline` notebook on the Azure Databricks workspace.
-  * [Data Scoring Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/3_Scoring_Pipeline.ipynb) Run all cells in the `notebooks/3_Scoring_Pipeline` notebook on the Azure Databricks workspace.
-  * (optional) Instruction to [create a batch scoring Databricks Job](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/BatchScoringJob.md) using the Databricks CLI are documented at the link.
+  * [Ingest Data](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/1_data_ingestion.ipynb). Open the `1_data_ingestion` notebook on the Azure Databricks workspace. You can either `Run All` cells, or execute cells individually. This notebook downloads the example data into your Azure Databricks Data storage.
+  * [Model Training Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/2_Training_Pipeline.ipynb) Open the `2_Training_Pipeline` notebook on the Azure Databricks workspace. You can either `Run All` cells, or execute cells individually. This notebook will run two external notebooks. 
+      1. Create a training data set with `2a_feature_engineering`. The training data is written to the Azure Databricks Data store. Once this notebook is run, you can optionally examine the data created with the `2a_feature_exploration` notebook.
+      2. Create a machine learning model with `2b_model_building`. Once this notebook is run, you can optionally examine the model with the `2b_model_testing` notebook with other data created with the `2a_feature_engineering` notebook. The model is stored on the Azure Databricks file system in parquet format.
+  * [Data Scoring Pipeline](https://github.com/ehrlinger/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/3_Scoring_Pipeline.ipynb) Open the `notebooks/3_Scoring_Pipeline` notebook on the Azure Databricks workspace. You can either `Run All` cells, or execute cells individually. This notebook will also run two external notebooks. 
+    1. Create a scoring data set with `2a_feature_engineering` with different input parameters than in the training dataset. The scoring data is written to the Azure Databricks Data store. Once this notebook is run, you can again optionally examine the data created with the `2a_feature_exploration` notebook. 
+    2. `3a_model_scoring` will score the data with the machine learning model created with `2b_model_building`. The results data is written to the Azure Databricks Data store. Once this notebook is run, you can optionally examine the scored results data with the `3a_model_scoring_evaluation` notebook.
+  * (optional) Instruction to create the batch scoring Databricks Job using the Databricks CLI are documented at https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/BatchScoringJob.md.
 
-This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The batch process is executed through Databricks Jobs, which automate running Databricks notebooks either on demand or on a schedule.
+# Conclusion
+
+This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The actual work of the "batch scoring a spark model" scenario is done through an Azure Databricks job. The job executes the `3_Scoring_Pipeline` notebook, which depends on a machine learning model existing on the Azure Databricks file storage. We created the model using the `2_Training_Pipeline` notebook which used the data downloaded with the `1_data_ingestion` notebook.
 
 # Cleaning up
 
 The easiest way to cleanup this work is to delete the resource group containing the Azure Databricks instance.
 
   1. Through the Azure portal (https://portal.azure.com) search for `databricks`. 
-  1. Locate and delete the resource group containing the Azure Databricks instance. This will remove the cluster, Databricks instance which includes the notebooks and data artifacts used in this scenario.
+  1. Open your Azure Databricks service and select the *Resource Group* link.
+  1. *Delete resource group*  will remove the Azure Databricks service and all associated resources including the notebooks and data artifacts used in this scenario.
 
 You may also want to remove the Databricks CLI from your python environment with
+
 ```
 pip uninstall databricks-cli
 ```
