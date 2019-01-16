@@ -12,7 +12,7 @@ For an in depth description of the scenario, we have documented the operations i
 
 This solution uses the Azure Databricks service. We create jobs that set up the batch scoring demonstration. Each job executes a Databricks notebook to prepare the data and create the full solution.
 
- 1. Ingest process downloads the simulated data sets from a GitHub site and converts and stores them as Spark dataframes on the Databricks DBFS. “Input Data” in the architecture diagram refers to a set of five simulated data sets related to realistic machine operating conditions. 
+ 1. Ingest process downloads the simulated data sets from a GitHub site and converts and stores them as Spark dataframes on the Databricks DBFS. “Input Data” in the architecture diagram refers to a set of five simulated data sets related to realistic machine operating conditions.
 
  2. Feature engineering transforms and combines the data sets into an analysis data set. The analysis data set can be targeted for training a model, or scoring data for a production pipeline. Each analysis data set is also stored in the Databricks DBFS.
 
@@ -30,7 +30,7 @@ This solution uses the Azure Databricks service. We create jobs that set up the 
 
 ## Azure Databricks
 
-This example is designed to run on [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/). Provision the service through your Azure supscription at the [Azure portal](https://portal.azure.com).
+This example is designed to run on [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/). Provision the service through your Azure subscription at the [Azure portal](https://portal.azure.com).
 
   * Search for `databricks` and select the Azure Databricks. Follow the prompts, and select `Standard pricing tier`. See https://azure.microsoft.com/en-us/pricing/details/databricks/ for information on different pricing tiers.
   
