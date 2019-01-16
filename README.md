@@ -30,9 +30,9 @@ This solution uses the Azure Databricks service. We create jobs that set up the 
 
 ## Azure Databricks
 
-This example is designed to run on [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/). Provision the service through your Azure supscription at the [Azure portal](https://portal.azure.com).
+This example is designed to run on [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/). Provision the service through your Azure subscription at the [Azure portal](https://portal.azure.com).
 
-  * Search for `databricks` and select the Azure Databricks. Follow the prompts, and select `Standard pricing tier`. See https://azure.microsoft.com/en-us/pricing/details/databricks/ for information on different pricing tiers.
+  * Click "+ Create a resource" button, then search for `databricks` and select the Azure Databricks search suggestion. Follow the prompts, and select `Standard pricing tier`. See https://azure.microsoft.com/en-us/pricing/details/databricks/ for information on different pricing tiers.
   
 See https://docs.azuredatabricks.net/getting-started/index.html for detailed documentation on using Azure Databricks.
 
@@ -76,7 +76,7 @@ We need to connect the CLI to your databricks instance. This can be done using a
 
  1. Copy the url portion of the web address of your Azure Databricks instance from your browser. You will not use the POST arguments for the hostname (everything including and following the '?' character). In `eastus` region, it will be `https://eastus.azuredatabricks.net/`.
 
- 2. Create and copy a an authentication token. Instructions are provided at the link above.
+ 2. Create and copy an authentication token. Instructions are provided at the link above.
 
  3. From your working machine command line, `databricks configure --token`. This will prompt you for your Azure Databricks hostname and the authentication token.
 
