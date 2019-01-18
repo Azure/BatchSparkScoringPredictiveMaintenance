@@ -10,7 +10,7 @@ You can create Databricks jobs through the Azure Databricks workspace portal or 
 
 1. The Databricks Cluster ID you want to run the job on.
 
-You can only get the ClusterID from the Databricks CLI. Assuming you have already connected the CLI to your Databricks instance, run the following command from a terminal window to get the cluster ID from the first field of the resulting table.
+You can only get the ClusterID from the Databricks CLI. Assuming you have already connected the CLI to your Databricks instance, run the following command from a terminal window to get **the cluster ID from the first field** of the resulting table. It is important to use the clusterID, not the cluster name, for the job to execute.
 
 ```
 databricks clusters list
@@ -20,11 +20,10 @@ databricks clusters list
 
 This will be the same username you used to copy the notebooks to your workspace and should take the form of `username@example.com`.
 
-
 Using this information, we have provided a script to customize the templates for connecting to your Databricks cluster. Execute the following command from a terminal window, in your repository root directory.
 
 ```
-python scripts/config.py [-h] [-c CLUSTERID] [-u USERNAME] ./jobs/
+python scripts/config.py  -c <clusterID> -u <username@example.com> ./jobs/
 ```
 
 This command reads the `./jobs/*.tmpl` files, replaces the clusterID and username placeholder strings with the specifics for your Databricks cluster, storing the modified files to the JSON jobs scripts we'll use to setup and demonstrate the Batch scoring processes.
