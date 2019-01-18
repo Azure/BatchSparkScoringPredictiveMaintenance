@@ -32,7 +32,7 @@ This solution uses the Azure Databricks service. We create jobs that set up the 
 
 This example is designed to run on [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/). Provision the service through your Azure subscription at the [Azure portal](https://portal.azure.com).
 
-  * Search for `databricks` and select the Azure Databricks. Follow the prompts, and select `Standard pricing tier`. See https://azure.microsoft.com/en-us/pricing/details/databricks/ for information on different pricing tiers.
+  * Click "+ Create a resource" button, then search for `databricks` and select the Azure Databricks search suggestion. Follow the prompts, and select `Standard pricing tier`. See https://azure.microsoft.com/en-us/pricing/details/databricks/ for information on different pricing tiers.
   
 See https://docs.azuredatabricks.net/getting-started/index.html for detailed documentation on using Azure Databricks.
 
@@ -76,7 +76,7 @@ We need to connect the CLI to your databricks instance. This can be done using a
 
  1. Copy the url portion of the web address of your Azure Databricks instance from your browser. You will not use the POST arguments for the hostname (everything including and following the '?' character). In `eastus` region, it will be `https://eastus.azuredatabricks.net/`.
 
- 2. Create and copy a an authentication token. Instructions are provided at the link above.
+ 2. Create and copy an authentication token. Instructions are provided at the link above.
 
  3. From your working machine command line, `databricks configure --token`. This will prompt you for your Azure Databricks hostname and the authentication token.
 
@@ -120,7 +120,7 @@ This scenario demonstrates how to automate the batch scoring of a predictive mai
 
 The easiest way to cleanup this work is to delete the resource group containing the Azure Databricks instance.
 
-  1. Through the Azure portal (https://portal.azure.com) search for `databricks`. 
+  1. Through the Azure portal (https://portal.azure.com) search for `databricks`.
   1. Open your Azure Databricks service and select the *Resource Group* link.
   1. *Delete resource group*  will remove the Azure Databricks service and all associated resources including the notebooks and data artifacts used in this scenario.
 
