@@ -142,7 +142,7 @@ This scenario has been developed using a similar predictive maintenance use case
  * [Predictive Maintenance scenario](https://docs.microsoft.com/en-us/azure/machine-learning/desktop-workbench/scenario-predictive-maintenance)
  * [Deep learning for predictive maintenance](https://docs.microsoft.com/en-us/azure/machine-learning/desktop-workbench/scenario-deep-learning-for-predictive-maintenance)
 
-We have also built an additional reference architecture leveraging spark for building real-time recommendation systems with off-line, pre-computed scores. These recommendation systems are common scenarios where scores are batch-processed. Relevant information about this related architectures is available here:
+We have also built an additional reference architecture leveraging spark for building real-time recommendation systems with off-line, pre-computed scores. These recommendation systems are common scenarios where scores are batch-processed. Relevant information about this related architecture is available here:
 
 * [Build a real-time recommendation API on Azure](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/ai/real-time-recommendation)
 * [Technical details for recommendation systems](https://github.com/Microsoft/Recommenders)
