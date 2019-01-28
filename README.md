@@ -114,6 +114,8 @@ When running the notebooks, you may have to start your Azure Databricks cluster 
     2. `3a_model_scoring` will score the data with the machine learning model created with `2b_model_building`. The results data is written to the Azure Databricks Data store. Once this notebook is run, you can optionally examine the scored results data with the `3a_model_scoring_evaluation` notebook.
   * (optional) Instructions to create the batch scoring Databricks Job using the Databricks CLI are documented at https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/BatchScoringJob.md.
 
+The scenario is constructed as a pipeline flow, where each notebook is optimized to perform in a batch setting for each of the ingest, feature engineering, model building, model scoring operations. To accomplish this, the feature engineering notebook is designed to be used to generate a general data set for any of the training, calibrate, test or scoring operations. In this scenario, we use a temporal split strategy for these operations, so the notebook parameters are used to set date range filtering.
+
 # Conclusion
 
 This scenario demonstrates how to automate the batch scoring of a predictive maintenance solution. The actual work of the "batch scoring a spark model" scenario is done through an Azure Databricks job. The job executes the `3_Scoring_Pipeline` notebook, which depends on a machine learning model existing on the Azure Databricks file storage. We created the model using the `2_Training_Pipeline` notebook which used the data downloaded with the `1_data_ingestion` notebook.
@@ -141,8 +143,6 @@ This scenario has been developed using a similar predictive maintenance use case
  * [Predictive Maintenance Modeling Guide using SQL R Services](https://gallery.azure.ai/Tutorial/Predictive-Maintenance-Modeling-Guide-using-SQL-R-Services-1)
  * [Predictive Maintenance Modeling Guide Python Notebook](https://gallery.azure.ai/Notebook/Predictive-Maintenance-Modelling-Guide-Python-Notebook-1)
  * [Predictive Maintenance using PySpark](https://gallery.azure.ai/Tutorial/Predictive-Maintenance-using-PySpark)
- * [Predictive Maintenance scenario](https://docs.microsoft.com/en-us/azure/machine-learning/desktop-workbench/scenario-predictive-maintenance)
- * [Deep learning for predictive maintenance](https://docs.microsoft.com/en-us/azure/machine-learning/desktop-workbench/scenario-deep-learning-for-predictive-maintenance)
 
 We have also built an additional reference architecture leveraging spark for building real-time recommendation systems with off-line, pre-computed scores. These recommendation systems are common scenarios where scores are batch-processed. Relevant information about this related architecture is available here:
 
