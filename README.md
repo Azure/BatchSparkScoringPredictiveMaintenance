@@ -4,7 +4,7 @@
 
 This scenario demonstrates batch scoring of a Spark machine learning model on Azure Databricks. We use a predictive maintenance scenario where we classify machine sensor readings to classify a set of four machine components into _healthy_ or _unhealthy requiring maintenance_ states. The resulting supervised multi-class classifier model scores batches of new observations through a regularly scheduled Azure Databricks notebook job.
 
-The solution uses methods from the PySpark MLlib machine learning library, but the scoring process can be generalized to use any Python or R model hosted on Azure Databricks to make real-time predictions.
+The solution uses methods from the PySpark MLlib machine learning library, but the scoring process can be generalized to use any Spark, Python or R model hosted on Azure Databricks to make real-time predictions.
 
 For an in-depth description of the scenario, we have documented the operations in each of the supplied Jupyter notebooks contained in the `./notebooks/` directory of this repository.
 
