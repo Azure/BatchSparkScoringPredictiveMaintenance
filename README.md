@@ -45,7 +45,7 @@ Once your Azure Databricks service has been created, you will need to create a c
 
 ## Databricks CLI
 
-We will be using a Databricks command line utility (CLI) to automate running notebook tasks using the Databricks Jobs construct. Installing the Databricks CLI will simplify some of the operations required for this scenario. After Databricks CLI is installed, it will be used to import the Jupyter notebooks from the repository into your Databricks workspace. This can be accomplished with 1 command once the CLI is connected to your Azure Databricks instance.
+We will be using a Databricks command line utility (CLI) to automate running notebook tasks using the Databricks Jobs construct. Installing the Databricks CLI will simplify some of the operations required for this scenario. The first step is to import the Jupyter notebooks from the repository into your Databricks workspace. This can be accomplished with 1 command once the CLI is connected to your Azure Databricks instance.
 
 From a command line, you can pip install the CLI using 
 
@@ -55,11 +55,11 @@ pip install --upgrade databricks-cli
 
 # Setup
 
- * Clone the GitHub repository:
-
-```{shell}
-git clone https://github.com/Azure/BatchSparkScoringPredictiveMaintenance.git
-```
+ * Clone the GitHub repository: 
+ 
+ ```
+ git clone https://github.com/Azure/BatchSparkScoringPredictiveMaintenance.git
+ ```
 
  * `cd` into the root directory of your cloned repository
 
@@ -107,7 +107,9 @@ When running the notebooks, you may have to start your Azure Databricks cluster 
   * [Model Training Pipeline](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/2_Training_Pipeline.ipynb) Open the `2_Training_Pipeline` notebook on the Azure Databricks workspace. You can either `Run All` cells, or execute cells individually. This notebook will run two external notebooks. 
       1. Create a training data set with `2a_feature_engineering`. The training data is written to the Azure Databricks Data store. Once this notebook is run, you can optionally examine the data created with the `2a_feature_exploration` notebook.
       2. Create a machine learning model with `2b_model_building`. Once this notebook is run, you can optionally examine the model with the `2b_model_testing` notebook with other data created with the `2a_feature_engineering` notebook. The model is stored on the Azure Databricks file system in parquet format.
+
   * [Data Scoring Pipeline](https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/notebooks/3_Scoring_Pipeline.ipynb) Open the `3_Scoring_Pipeline` notebook on the Azure Databricks workspace. You can either `Run All` cells, or execute cells individually. This notebook will also run two external notebooks. 
+
     1. Create a scoring data set with `2a_feature_engineering` with different input parameters than in the training dataset. The scoring data is written to the Azure Databricks Data store. Once this notebook is run, you can again optionally examine the data created with the `2a_feature_exploration` notebook. 
     2. `3a_model_scoring` will score the data with the machine learning model created with `2b_model_building`. The results data is written to the Azure Databricks Data store. Once this notebook is run, you can optionally examine the scored results data with the `3a_model_scoring_evaluation` notebook.
   * (optional) Instructions to create the batch scoring Databricks Job using the Databricks CLI are documented at https://github.com/Azure/BatchSparkScoringPredictiveMaintenance/blob/master/BatchScoringJob.md.
