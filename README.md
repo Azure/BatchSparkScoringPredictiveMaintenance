@@ -20,7 +20,7 @@ This solution uses the Azure Databricks service. We create jobs that set up the 
 
  4. **Scoring** uses a different subset of the data, including data not yet collected to predict the current and future state of the machine. The model results are stored back onto the Databricks DBFS.
 
-![Databricks Architecture diagram](./architecture.jpg "Architecture diagram")
+![Databricks Architecture diagram](./batch-scoring-spark.png "Architecture diagram")
 
 # Prerequisites
 
