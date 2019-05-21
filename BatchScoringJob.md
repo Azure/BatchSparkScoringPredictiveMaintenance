@@ -10,7 +10,7 @@ You can create Databricks jobs through the Azure Databricks workspace portal or 
 
 1. The Databricks Cluster ID you want to run the job on.
 
-You can only get the ClusterID from the Databricks CLI. Assuming you have already connected the CLI to your Databricks instance, run the following command from a terminal window to get **the cluster ID from the first field** of the resulting table. It is important to use the clusterID, not the cluster name, for the job to execute.
+You can find the ClusterID by navigating to the Clusters pane in the Azure Databricks workspace portal. Click on Advanced Options and the ClusterID is listed under the Tags tab. You can also get the ClusterID using the Databricks CLI. Assuming you have already connected the CLI to your Databricks instance, run the following command from a terminal window to get **the cluster ID from the first field** of the resulting table. It is important to use the clusterID, not the cluster name, for the job to execute.
 
 ```
 databricks clusters list
